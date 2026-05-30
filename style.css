@@ -1,0 +1,103 @@
+body{
+    background-color:#28446e;
+}
+
+input{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 18pt;
+    
+}
+
+canvas{
+    background-color: #ffffff;
+}
+
+.banner-container{
+    width: 100%;
+    min-height:20vh;
+
+    /* add the background image */
+    background-image: url("images/binary-banner-bg.webp");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.banner-title{
+    color: #ffffff;            
+    font-family: 'Arial', sans-serif;
+    font-size: 3rem;              /* Large, bold text */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    
+    /* Text shadow for extra readability against busy backgrounds */
+    text-shadow: 4px 2px 4px rgba(0, 0, 0, 0.577);
+    text-shadow: 0 0 8px #0d7e97,  /* Soft inner glow */
+                 0 0 5px #0008ff;  /* Broader outer glow */
+
+}
+
+.main-menu{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    gap: clamp(12%, 5vw, 60px);
+    padding: 5px;
+}
+.main-menu a{
+    font-size: 2rem;
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 500;
+    transition: all 0.3s ease; /* Makes the hover effect smooth */
+    
+}
+.main-menu a:hover{
+    color: #7adff6;
+    text-shadow: 0 0 8px rgba(0,210,255,0.6);
+}
+
+.dropdown{
+    position: relative;
+}
+.dropdown-content{
+    display: none;
+    position:absolute;
+    width: max-content;
+    white-space: nowrap;
+    font-size: 2rem;
+    padding: 10px 0px;
+    
+    color: rgb(120, 223, 244);
+    
+}
+.dropdown-content a{
+    font-size: 20pt;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.canvas-drawing{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10%;
+    
+    
+}
+.canvas-btns{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    
+
+}
