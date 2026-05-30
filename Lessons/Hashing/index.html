@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <!-- Link to external CSS file -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Link to external JavaScript file -->
+  <script>
+
+    function verify(){
+      password = document.getElementById('password').value;
+      if(password == 'password123'){
+        window.location.href='levelTwo.html';
+      }
+      else{
+        document.getElementById('message').className = 'error';
+        document.getElementById('message').innerHTML = 'WRONG PASSWORD! Try again'
+      }
+    }
+
+
+
+  </script>
+
+    <title>Encryption</title>
+  </head>
+
+
+  <body>
+
+    <div class="login">
+      <h1>Level One</h1>
+
+      <p>Let's start off easy... inspect the source code and check the varify function. See if you can find the password</p>
+
+      <h2 id="message">Enter password to continue</h2>
+      <input type="text" id="password" autocomplete="off">
+      <button type="button" onclick="verify();">Login</button>
+
+    </div>
+
+    <a href="/index.html">Home</a>
+
+  </body>
+</html>

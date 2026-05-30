@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSS Grid — Grid Designer</title>
+
+  <!-- ============================================================
+       FONTS
+       We load two Google Fonts:
+       - "DM Sans" for body/UI text (clean and readable)
+       - "DM Mono" for code snippets (monospaced)
+  ============================================================ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       CSS CUSTOM PROPERTIES (DESIGN TOKENS)
+       All colours, spacing, and typography values are defined here
+       so they can be changed in one place.
+    ============================================================ */
+    :root {
+      --font-sans: 'DM Sans', system-ui, sans-serif;
+      --font-mono: 'DM Mono', monospace;
+
+      /* Page colours */
+      --bg-page:        #f5f4f0;
+      --bg-surface:     #ffffff;
+      --bg-subtle:      #eeecea;
+      --bg-code:        #1e1e2e;
+
+      /* Text colours */
+      --text-primary:   #1a1a1a;
+      --text-secondary: #5a5a5a;
+      --text-muted:     #888880;
+      --text-code:      #cdd6f4;
+
+      /* Syntax highlight colours (used inside code blocks) */
+      --code-key:       #89b4fa;   /* CSS property names  */
+      --code-val:       #a6e3a1;   /* CSS values          */
+      --code-comment:   #585b70;   /* Comments            */
+      --code-punct:     #cba6f7;   /* Braces / punctuation */
+
+      /* Accent / interactive colours */
+      --accent:         #3b5bdb;
+      --accent-light:   #dbe4ff;
+      --border:         rgba(0,0,0,0.10);
+      --border-strong:  rgba(0,0,0,0.18);
+
+      /* Grid-item palette — 6 colours for the demo boxes */
+      --item-0-bg: #b5d4f4; --item-0-fg: #0c447c;
+      --item-1-bg: #9fe1cb; --item-1-fg: #085041;
+      --item-2-bg: #fac775; --item-2-fg: #633806;
+      --item-3-bg: #f5c4b3; --item-3-fg: #712b13;
+      --item-4-bg: #c0dd97; --item-4-fg: #27500a;
+      --item-5-bg: #f4c0d1; --item-5-fg: #72243e;
+
+      /* Spacing */
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+    }
+
+    /* ============================================================
+       RESET & BASE STYLES
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-primary);
+      background: var(--bg-page);
+      padding: 2rem 1rem 4rem;
+    }
+
+    a {
+        font-size: 2rem;
+        text-decoration: none;
+        color: #232121;
+        font-weight: 500;
+        transition: all 0.3s ease; /* Makes the hover effect smooth */
+    }
+
+    /* ============================================================
+       PAGE LAYOUT
+       The lesson is centred in a max-width container.
+    ============================================================ */
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    /* ---- Page header ---- */
+    .page-header {
+      margin-bottom: 2rem;
+    }
+    .page-header h1 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.3rem;
+    }
+    .page-header p {
+      color: var(--text-secondary);
+      max-width: 540px;
+    }
+
+    /* ============================================================
+       TAB NAVIGATION
+       Four tabs let students step through concepts in order.
+    ============================================================ */
+    .tab-bar {
+      display: flex;
+      gap: 2px;
+      border-bottom: 1px solid var(--border-strong);
+      margin-bottom: 1.75rem;
+    }
+
+    .tab {
+      /* Reset browser button styles */
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;        /* overlap the tab-bar border */
+      padding: 0.5rem 1.1rem;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .tab:hover { color: var(--text-primary); }
+    .tab.active {
+      color: var(--text-primary);
+      border-bottom-color: var(--text-primary);
+    }
+
+    /* ============================================================
+       TAB PANELS
+       Only the active panel is shown; others are hidden with JS.
+    ============================================================ */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* ============================================================
+       SECTION HEADINGS & DESCRIPTIONS
+    ============================================================ */
+    .panel h2 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+    .panel .desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+      max-width: 600px;
+    }
+    .panel .desc code {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      background: var(--bg-subtle);
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    /* ============================================================
+       CONTROLS CARD
+       The white card that holds all the interactive inputs.
+    ============================================================ */
+    .controls-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.1rem 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    /* ---- Individual control row ---- */
+    .ctrl-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 0.75rem;
+    }
+    .ctrl-row:last-child { margin-bottom: 0; }
+
+    /* Property name label */
+    .ctrl-label {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      min-width: 210px;
+    }
+    /* Small hint text beneath the property name */
+    .ctrl-label small {
+      display: block;
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    /* ---- Form elements ---- */
+    select {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      padding: 5px 8px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      background: var(--bg-page);
+      color: var(--text-primary);
+      cursor: pointer;
+      flex: 1;
+      min-width: 0;
+    }
+    select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+    input[type="range"] {
+      flex: 1;
+      accent-color: var(--accent);
+      cursor: pointer;
+      min-width: 80px;
+    }
+
+    /* Small badge that shows the current slider value */
+    .val-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 3px 8px;
+      min-width: 42px;
+      text-align: center;
+      color: var(--text-primary);
+    }
+
+    /* Thin divider inside the controls card */
+    .ctrl-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0.75rem 0;
+    }
+
+    /* ============================================================
+       LIVE GRID PREVIEW
+       The coloured boxes that respond to the controls.
+    ============================================================ */
+    .grid-preview {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      min-height: 160px;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Each coloured box inside the preview */
+    .grid-item {
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      min-height: 44px;
+    }
+
+    /* ============================================================
+       CODE BLOCK
+       Shows the CSS that matches the current control settings.
+    ============================================================ */
+    .code-block {
+      background: var(--bg-code);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.1rem;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.8;
+      color: var(--text-code);
+      margin-bottom: 1.25rem;
+      overflow-x: auto;
+      white-space: pre;
+    }
+    /* Syntax-highlight spans injected by JavaScript */
+    .code-block .k  { color: var(--code-key);     } /* property */
+    .code-block .v  { color: var(--code-val);     } /* value    */
+    .code-block .cm { color: var(--code-comment); } /* comment  */
+    .code-block .p  { color: var(--code-punct);   } /* punct    */
+
+    /* ============================================================
+       SPAN TAB — item picker pills
+    ============================================================ */
+    .item-pills {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 0.75rem;
+    }
+    .item-pills span {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-right: 2px;
+    }
+    .pill {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border-strong);
+      cursor: pointer;
+      color: var(--text-secondary);
+      background: transparent;
+      transition: background 0.15s, color 0.15s;
+    }
+    .pill.sel {
+      background: var(--text-primary);
+      color: var(--bg-surface);
+      border-color: transparent;
+    }
+
+    /* Two-column grid for the span selects */
+    .span-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 0;
+    }
+    .span-grid .ctrl-label { min-width: unset; margin-bottom: 4px; }
+    .span-select-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .span-select-row span {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* ============================================================
+       AREAS TAB — explanatory note beneath the preview
+    ============================================================ */
+    .area-note {
+      font-size: 13px;
+      color: var(--text-secondary);
+      background: var(--bg-subtle);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      line-height: 1.6;
+      margin-top: -0.5rem;
+      margin-bottom: 1.25rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     PAGE WRAPPER
+============================================================ -->
+<div class="page">
+
+  <!-- Page title -->
+  <header class="page-header">
+    <h1>CSS Grid Advance — Grid Designer</h1>
+    <p>Learn how CSS Grid works by tweaking properties and watching the layout update in real time.</p>
+    <br>
+    <p>You can then apply this code to your website! </p>
+    <br>
+    <p><strong>Yes</strong>, I "vibe coded" this one (don't hold it against me)</p>
+  </header>
+
+  <!-- ============================================================
+       TAB NAVIGATION
+       Each button's onclick calls switchTab() with the tab's ID.
+  ============================================================ -->
+  <nav class="tab-bar" role="tablist" aria-label="Lesson sections">
+    <button class="tab active" role="tab" aria-selected="true"  onclick="switchTab('basics', this)">1. Basics</button>
+    <button class="tab"        role="tab" aria-selected="false" onclick="switchTab('spans',  this)">2. Spanning</button>
+    <button class="tab"        role="tab" aria-selected="false" onclick="switchTab('areas',  this)">3. Template areas</button>
+    <button class="tab"        role="tab" aria-selected="false" onclick="switchTab('align',  this)">4. Alignment</button>
+  </nav>
+
+
+  <!-- ===========================================================
+       TAB 1 — BASICS
+       Covers: display:grid, grid-template-columns,
+               grid-template-rows, and gap.
+  =========================================================== -->
+  <section id="panel-basics" class="panel active" role="tabpanel">
+
+    <h2>The grid container</h2>
+    <p class="desc">
+      Adding <code>display: grid</code> to a parent element turns its children into
+      grid items. Use the controls below to see how
+      <code>grid-template-columns</code>, <code>grid-template-rows</code>,
+      and <code>gap</code> shape the layout.
+    </p>
+
+    <!-- Controls -->
+    <div class="controls-card">
+
+      <!-- grid-template-columns -->
+      <div class="ctrl-row">
+        <div class="ctrl-label">
+          grid-template-columns
+          <small>Defines column widths</small>
+        </div>
+        <select id="b-cols" onchange="updateBasics()">
+          <option>repeat(2, 1fr)</option>
+          <option selected>repeat(3, 1fr)</option>
+          <option>repeat(4, 1fr)</option>
+          <option>1fr 2fr 1fr</option>
+          <option>200px 1fr</option>
+          <option>repeat(auto-fill, minmax(100px, 1fr))</option>
+        </select>
+      </div>
+
+      <!-- grid-template-rows -->
+      <div class="ctrl-row">
+        <div class="ctrl-label">
+          grid-template-rows
+          <small>Defines row heights</small>
+        </div>
+        <select id="b-rows" onchange="updateBasics()">
+          <option selected>auto</option>
+          <option>repeat(2, 80px)</option>
+          <option>100px auto</option>
+          <option>minmax(60px, auto)</option>
+        </select>
+      </div>
+
+      <!-- gap (range slider) -->
+      <div class="ctrl-row">
+        <div class="ctrl-label">
+          gap
+          <small>Space between cells</small>
+        </div>
+        <input type="range" id="b-gap" min="0" max="24" step="2" value="8"
+               oninput="updateBasics()" />
+        <span class="val-badge" id="b-gap-val">8px</span>
+      </div>
+
+    </div><!-- /controls-card -->
+
+    <!-- Live preview — JS fills this with .grid-item divs -->
+    <div class="grid-preview" id="basics-preview" aria-label="Grid preview"></div>
+
+    <!-- Generated CSS — JS fills this with highlighted code -->
+    <pre class="code-block" id="basics-code" aria-label="Generated CSS"></pre>
+
+  </section>
+
+
+  <!-- ===========================================================
+       TAB 2 — SPANNING
+       Covers: grid-column, grid-row, span keyword.
+  =========================================================== -->
+  <section id="panel-spans" class="panel" role="tabpanel">
+
+    <h2>Spanning columns and rows</h2>
+    <p class="desc">
+      Grid items can stretch across multiple columns or rows using
+      <code>grid-column</code> and <code>grid-row</code>.
+      Select an item below, then change its start line and end span.
+    </p>
+
+    <div class="controls-card">
+
+      <!-- Item picker pills -->
+      <div class="item-pills">
+        <span>Edit item:</span>
+        <!-- Each pill calls selectSpanItem() with its index -->
+        <button class="pill sel" id="sp-pill-0" onclick="selectSpanItem(0)">A</button>
+        <button class="pill"     id="sp-pill-1" onclick="selectSpanItem(1)">B</button>
+        <button class="pill"     id="sp-pill-2" onclick="selectSpanItem(2)">C</button>
+        <button class="pill"     id="sp-pill-3" onclick="selectSpanItem(3)">D</button>
+        <button class="pill"     id="sp-pill-4" onclick="selectSpanItem(4)">E</button>
+      </div>
+
+      <!-- Two-column layout: column span | row span -->
+      <div class="span-grid">
+
+        <!-- grid-column: start / end -->
+        <div>
+          <div class="ctrl-label">
+            grid-column
+            <small>start / end</small>
+          </div>
+          <div class="span-select-row">
+            <select id="sp-col-start" onchange="updateSpans()" style="flex:1">
+              <option value="auto">auto</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+            <span>/</span>
+            <select id="sp-col-end" onchange="updateSpans()" style="flex:1">
+              <option value="auto" selected>auto</option>
+              <option value="span 2">span 2</option>
+              <option value="span 3">span 3</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- grid-row: start / end -->
+        <div>
+          <div class="ctrl-label">
+            grid-row
+            <small>start / end</small>
+          </div>
+          <div class="span-select-row">
+            <select id="sp-row-start" onchange="updateSpans()" style="flex:1">
+              <option value="auto">auto</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+            </select>
+            <span>/</span>
+            <select id="sp-row-end" onchange="updateSpans()" style="flex:1">
+              <option value="auto" selected>auto</option>
+              <option value="span 2">span 2</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </div>
+        </div>
+
+      </div><!-- /span-grid -->
+
+    </div><!-- /controls-card -->
+
+    <div class="grid-preview" id="spans-preview" aria-label="Grid preview"></div>
+    <pre class="code-block" id="spans-code" aria-label="Generated CSS"></pre>
+
+  </section>
+
+
+  <!-- ===========================================================
+       TAB 3 — TEMPLATE AREAS
+       Covers: grid-template-areas, grid-area.
+  =========================================================== -->
+  <section id="panel-areas" class="panel" role="tabpanel">
+
+    <h2>Named template areas</h2>
+    <p class="desc">
+      <code>grid-template-areas</code> lets you sketch your layout with named
+      zones. Each name then maps directly to an element via
+      <code>grid-area</code>. A full stop (<code>.</code>) marks an empty cell.
+    </p>
+
+    <div class="controls-card">
+      <div class="ctrl-row">
+        <div class="ctrl-label">
+          grid-template-areas
+          <small>Choose a layout pattern</small>
+        </div>
+        <select id="area-layout" onchange="updateAreas()">
+          <option value="holy-grail">Holy grail (header / sidebar / main / aside / footer)</option>
+          <option value="sidebar-main">Sidebar + main</option>
+          <option value="magazine">Magazine (featured + tiles)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid-preview" id="areas-preview" aria-label="Grid preview"></div>
+    <pre class="code-block" id="areas-code" aria-label="Generated CSS"></pre>
+    <p class="area-note" id="areas-note"></p>
+
+  </section>
+
+
+  <!-- ===========================================================
+       TAB 4 — ALIGNMENT
+       Covers: justify-items, align-items,
+               justify-content, align-content.
+  =========================================================== -->
+  <section id="panel-align" class="panel" role="tabpanel">
+
+    <h2>Aligning items inside the grid</h2>
+    <p class="desc">
+      Control how items sit within their cells with
+      <code>justify-items</code> (horizontal) and
+      <code>align-items</code> (vertical).
+      Use <code>justify-content</code> / <code>align-content</code> to
+      position the whole grid inside its container.
+    </p>
+
+    <div class="controls-card">
+
+      <!-- justify-items -->
+      <div class="ctrl-row">
+        <div class="ctrl-label">
+          justify-items
+          <small>Horizontal alignment of all items</small>
+        </div>
+        <select id="al-ji" onchange="updateAlign()">
+          <option>start</option>
+          <option selected>stretch</option>
+          <option>center</option>
+          <option>end</option>
+        </select>
+      </div>
+
+      <!-- align-items -->
+      <div class="ctrl-row">
+        <div class="ctrl-label">
+          align-items
+          <small>Vertical alignment of all items</small>
+        </div>
+        <select id="al-ai" onchange="updateAlign()">
+          <option>start</option>
+          <option selected>stretch</option>
+          <option>center</option>
+          <option>end</option>
+        </select>
+      </div>
+
+      <hr class="ctrl-divider" />
+
+      <!-- justify-content -->
+      <div class="ctrl-row">
+        <div class="ctrl-label">
+          justify-content
+          <small>Horizontal alignment of the whole grid</small>
+        </div>
+        <select id="al-jc" onchange="updateAlign()">
+          <option selected>start</option>
+          <option>center</option>
+          <option>end</option>
+          <option>space-between</option>
+          <option>space-around</option>
+          <option>space-evenly</option>
+        </select>
+      </div>
+
+      <!-- align-content -->
+      <div class="ctrl-row">
+        <div class="ctrl-label">
+          align-content
+          <small>Vertical alignment of the whole grid</small>
+        </div>
+        <select id="al-ac" onchange="updateAlign()">
+          <option selected>start</option>
+          <option>center</option>
+          <option>end</option>
+          <option>space-between</option>
+          <option>space-around</option>
+        </select>
+      </div>
+
+    </div><!-- /controls-card -->
+
+    <div class="grid-preview" id="align-preview" style="min-height:220px;"
+         aria-label="Grid preview"></div>
+    <pre class="code-block" id="align-code" aria-label="Generated CSS"></pre>
+
+  </section>
+
+</div>
+<a href="/index.html">Home</a>
+<!-- /page -->
+
+
+<!-- ============================================================
+     JAVASCRIPT
+     All interactivity lives here. The script is split into:
+       1. Shared helpers
+       2. Tab switching
+       3. Tab 1 — Basics
+       4. Tab 2 — Spanning
+       5. Tab 3 — Template areas
+       6. Tab 4 — Alignment
+       7. Initialisation (runs all four update functions on load)
+============================================================ -->
+<script>
+
+/* ----------------------------------------------------------
+   1. SHARED HELPERS
+---------------------------------------------------------- */
+
+/**
+ * ITEM COLOUR PALETTE
+ * Six background/foreground pairs for the demo grid items.
+ * Index is taken mod 6 so it wraps for grids with more items.
+ */
+const COLORS = [
+  { bg: '#b5d4f4', fg: '#0c447c' },
+  { bg: '#9fe1cb', fg: '#085041' },
+  { bg: '#fac775', fg: '#633806' },
+  { bg: '#f5c4b3', fg: '#712b13' },
+  { bg: '#c0dd97', fg: '#27500a' },
+  { bg: '#f4c0d1', fg: '#72243e' },
+];
+
+/**
+ * makeItem(label, colorIndex, extraStyle)
+ * Returns the HTML string for one coloured grid-item box.
+ *
+ * @param {string} label      — Letter shown inside the box (A, B …)
+ * @param {number} i          — Colour index (0–5, wraps)
+ * @param {string} extraStyle — Any additional inline CSS (e.g. grid-column)
+ */
+function makeItem(label, i, extraStyle = '') {
+  const { bg, fg } = COLORS[i % COLORS.length];
+  return `<div class="grid-item"
+               style="background:${bg}; color:${fg}; ${extraStyle}">
+            ${label}
+          </div>`;
+}
+
+/**
+ * hl(type, text)
+ * Wraps text in a <span> for syntax highlighting inside code blocks.
+ * Types: 'k' = property, 'v' = value, 'cm' = comment, 'p' = punctuation.
+ */
+function hl(type, text) {
+  return `<span class="${type}">${text}</span>`;
+}
+
+
+/* ----------------------------------------------------------
+   2. TAB SWITCHING
+---------------------------------------------------------- */
+
+/**
+ * switchTab(id, btn)
+ * Shows the panel whose id is "panel-{id}" and marks the
+ * clicked button as active. All other panels are hidden.
+ *
+ * @param {string}      id  — Tab identifier ('basics', 'spans', etc.)
+ * @param {HTMLElement} btn — The button that was clicked
+ */
+function switchTab(id, btn) {
+  // Hide every panel
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  // Deactivate every tab button
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.remove('active');
+    t.setAttribute('aria-selected', 'false');
+  });
+
+  // Show the target panel
+  document.getElementById('panel-' + id).classList.add('active');
+  // Activate the clicked button
+  btn.classList.add('active');
+  btn.setAttribute('aria-selected', 'true');
+}
+
+
+/* ----------------------------------------------------------
+   3. TAB 1 — BASICS
+   Reads the three controls and:
+   • Applies the CSS values to the preview container
+   • Populates the preview with six grid items
+   • Renders a highlighted code snippet
+---------------------------------------------------------- */
+
+function updateBasics() {
+  const cols = document.getElementById('b-cols').value;
+  const rows = document.getElementById('b-rows').value;
+  const gap  = document.getElementById('b-gap').value;
+
+  // Update the slider readout badge
+  document.getElementById('b-gap-val').textContent = gap + 'px';
+
+  // --- Apply styles to the live preview ---
+  const preview = document.getElementById('basics-preview');
+  preview.style.display              = 'grid';
+  preview.style.gridTemplateColumns  = cols;
+  preview.style.gridTemplateRows     = rows;
+  preview.style.gap                  = gap + 'px';
+
+  // Populate with six lettered boxes
+  preview.innerHTML = ['A','B','C','D','E','F']
+    .map((letter, i) => makeItem(letter, i))
+    .join('');
+
+  // --- Build the highlighted CSS code ---
+  // Only show grid-template-rows if it's not the default "auto"
+  const rowLine = rows !== 'auto'
+    ? `\n  ${hl('k','grid-template-rows')}: ${hl('v', rows)};`
+    : '';
+
+  document.getElementById('basics-code').innerHTML =
+    `${hl('cm','/* container */')}\n` +
+    `${hl('p','.grid')} ${hl('p','{')}` +
+      `\n  ${hl('k','display')}: ${hl('v','grid')};` +
+      `\n  ${hl('k','grid-template-columns')}: ${hl('v', cols)};` +
+      rowLine +
+      `\n  ${hl('k','gap')}: ${hl('v', gap + 'px')};` +
+    `\n${hl('p','}')}`;
+}
+
+
+/* ----------------------------------------------------------
+   4. TAB 2 — SPANNING
+   Each item stores its own column/row settings in spanData[].
+   Selecting a pill loads that item's values into the selects.
+   Changing a select saves back to spanData[] and re-renders.
+---------------------------------------------------------- */
+
+/**
+ * spanData — array of span settings for each of the 5 items.
+ * cs/ce = column-start/end, rs/re = row-start/end.
+ * 'auto' means "let the browser place it automatically".
+ */
+const spanData = [
+  { cs: 'auto', ce: 'auto', rs: 'auto', re: 'auto' },
+  { cs: 'auto', ce: 'auto', rs: 'auto', re: 'auto' },
+  { cs: 'auto', ce: 'auto', rs: 'auto', re: 'auto' },
+  { cs: 'auto', ce: 'auto', rs: 'auto', re: 'auto' },
+  { cs: 'auto', ce: 'auto', rs: 'auto', re: 'auto' },
+];
+
+let selectedSpanItem = 0; // Index of the currently selected item
+
+/**
+ * selectSpanItem(index)
+ * Highlights the chosen pill and loads its saved span values
+ * into the four select controls.
+ */
+function selectSpanItem(index) {
+  selectedSpanItem = index;
+
+  // Toggle pill styles
+  document.querySelectorAll('.pill').forEach((p, j) =>
+    p.classList.toggle('sel', j === index)
+  );
+
+  // Load the saved values into the select elements
+  const d = spanData[index];
+  document.getElementById('sp-col-start').value = d.cs;
+  document.getElementById('sp-col-end').value   = d.ce;
+  document.getElementById('sp-row-start').value = d.rs;
+  document.getElementById('sp-row-end').value   = d.re;
+}
+
+/**
+ * updateSpans()
+ * Reads the four selects, saves values to spanData[], then
+ * re-renders the preview and code block.
+ */
+function updateSpans() {
+  // Save the current control values for the selected item
+  const d = spanData[selectedSpanItem];
+  d.cs = document.getElementById('sp-col-start').value;
+  d.ce = document.getElementById('sp-col-end').value;
+  d.rs = document.getElementById('sp-row-start').value;
+  d.re = document.getElementById('sp-row-end').value;
+
+  // --- Render preview ---
+  const preview = document.getElementById('spans-preview');
+  preview.style.display             = 'grid';
+  preview.style.gridTemplateColumns = 'repeat(3, 1fr)';
+  preview.style.gap                 = '8px';
+
+  const labels = ['A','B','C','D','E'];
+
+  preview.innerHTML = labels.map((letter, i) => {
+    const s = spanData[i];
+    // Build the inline grid-column and grid-row values
+    const colVal = `${s.cs} / ${s.ce}`;
+    const rowVal = `${s.rs} / ${s.re}`;
+    // Outline highlights the selected item
+    const outline = i === selectedSpanItem
+      ? 'outline: 2px solid #3b5bdb; outline-offset: 2px;'
+      : '';
+    return makeItem(letter, i, `grid-column:${colVal}; grid-row:${rowVal}; ${outline}`);
+  }).join('');
+
+  // --- Render code block for the selected item ---
+  const sel = spanData[selectedSpanItem];
+  const codeLines = [];
+  if (sel.cs !== 'auto' || sel.ce !== 'auto') {
+    codeLines.push(
+      `  ${hl('k','grid-column')}: ${hl('v', sel.cs + ' / ' + sel.ce)};`
+    );
+  }
+  if (sel.rs !== 'auto' || sel.re !== 'auto') {
+    codeLines.push(
+      `  ${hl('k','grid-row')}: ${hl('v', sel.rs + ' / ' + sel.re)};`
+    );
+  }
+
+  // If neither property is overridden, show a comment instead
+  const body = codeLines.length
+    ? codeLines.join('\n')
+    : `  ${hl('cm','/* no overrides — placed automatically */')}`;
+
+  document.getElementById('spans-code').innerHTML =
+    `${hl('cm', '/* Item ' + labels[selectedSpanItem] + ' */')}\n` +
+    `${hl('p', '.item-' + labels[selectedSpanItem].toLowerCase())} ${hl('p','{')}` +
+    `\n${body}\n` +
+    `${hl('p','}')}`;
+}
+
+
+/* ----------------------------------------------------------
+   5. TAB 3 — TEMPLATE AREAS
+   Each layout preset defines columns, rows, the areas matrix,
+   the named zones, and an explanation note.
+---------------------------------------------------------- */
+
+/**
+ * AREA LAYOUT PRESETS
+ * Each key matches a <select> option value.
+ *
+ * cols   — grid-template-columns value
+ * rows   — grid-template-rows value
+ * areas  — 2-D array, each inner array = one row of area names
+ * zones  — unique area names (determines which items to render)
+ * note   — explanation shown below the preview
+ */
+const AREA_LAYOUTS = {
+
+  'holy-grail': {
+    cols:  '1fr 3fr 1fr',
+    rows:  '60px 1fr 50px',
+    areas: [
+      ['header', 'header',  'header'],
+      ['sidebar','main',    'aside' ],
+      ['footer', 'footer',  'footer'],
+    ],
+    zones: ['header','sidebar','main','aside','footer'],
+    note:  'The "holy grail": a header and footer that span the full width, with a three-column middle section. One of the most common page layouts on the web.',
+  },
+
+  'sidebar-main': {
+    cols:  '220px 1fr',
+    rows:  '1fr',
+    areas: [
+      ['sidebar', 'main'],
+    ],
+    zones: ['sidebar','main'],
+    note:  'A fixed-width sidebar (220px) beside a fluid main area (1fr). Simple and very common for dashboards and documentation sites.',
+  },
+
+  'magazine': {
+    cols:  'repeat(3, 1fr)',
+    rows:  '160px 160px',
+    areas: [
+      ['featured','featured','tile-a'],
+      ['featured','featured','tile-b'],
+    ],
+    zones: ['featured','tile-a','tile-b'],
+    note:  'A featured article spans two rows and two columns; smaller tiles stack beside it. Great for news or portfolio grids.',
+  },
+};
+
+/**
+ * updateAreas()
+ * Reads the layout select, applies CSS to the preview,
+ * renders items, and generates a code snippet.
+ */
+function updateAreas() {
+  const key    = document.getElementById('area-layout').value;
+  const layout = AREA_LAYOUTS[key];
+
+  // --- Apply grid styles to preview ---
+  const preview = document.getElementById('areas-preview');
+  preview.style.display             = 'grid';
+  preview.style.gridTemplateColumns = layout.cols;
+  preview.style.gridTemplateRows    = layout.rows;
+  preview.style.gap                 = '8px';
+  // Convert the 2-D array into a quoted string for grid-template-areas
+  preview.style.gridTemplateAreas  = layout.areas
+    .map(row => `"${row.join(' ')}"`)
+    .join(' ');
+
+  // Render one box per named zone
+  preview.innerHTML = layout.zones
+    .map((zone, i) => makeItem(zone, i, `grid-area: ${zone};`))
+    .join('');
+
+  // --- Build code snippet ---
+  // Container CSS
+  const areaRows = layout.areas
+    .map(row => `    ${hl('v', '"' + row.join(' ') + '"')}`)
+    .join('\n');
+
+  // Item CSS (one rule per zone)
+  const itemRules = layout.zones
+    .map((zone, i) =>
+      `\n${hl('cm','/* item ' + (i+1) + ' */')}\n` +
+      `${hl('p','.' + zone)} ${hl('p','{')} ${hl('k','grid-area')}: ${hl('v', zone)}; ${hl('p','}')}`
+    )
+    .join('\n');
+
+  document.getElementById('areas-code').innerHTML =
+    `${hl('cm','/* container */')}\n` +
+    `${hl('p','.grid')} ${hl('p','{')}` +
+    `\n  ${hl('k','display')}: ${hl('v','grid')};` +
+    `\n  ${hl('k','grid-template-columns')}: ${hl('v', layout.cols)};` +
+    `\n  ${hl('k','grid-template-rows')}: ${hl('v', layout.rows)};` +
+    `\n  ${hl('k','grid-template-areas')}:\n${areaRows};` +
+    `\n${hl('p','}')}` +
+    itemRules;
+
+  // Explanation note
+  document.getElementById('areas-note').textContent = layout.note;
+}
+
+
+/* ----------------------------------------------------------
+   6. TAB 4 — ALIGNMENT
+   Four select controls map directly to CSS alignment properties.
+   The preview uses fixed-width columns (80px) so alignment
+   shifts are easy to see.
+---------------------------------------------------------- */
+
+function updateAlign() {
+  const ji = document.getElementById('al-ji').value; // justify-items
+  const ai = document.getElementById('al-ai').value; // align-items
+  const jc = document.getElementById('al-jc').value; // justify-content
+  const ac = document.getElementById('al-ac').value; // align-content
+
+  // --- Apply to preview ---
+  const preview = document.getElementById('align-preview');
+  preview.style.display             = 'grid';
+  preview.style.gridTemplateColumns = 'repeat(3, 80px)'; // intentionally narrow
+  preview.style.gridTemplateRows    = 'repeat(2, 70px)';
+  preview.style.gap                 = '8px';
+  preview.style.justifyItems        = ji;
+  preview.style.alignItems          = ai;
+  preview.style.justifyContent      = jc;
+  preview.style.alignContent        = ac;
+
+  // Items have a min-size so alignment is visible
+  preview.innerHTML = ['A','B','C','D','E','F']
+    .map((l, i) => makeItem(l, i, 'min-width:30px; min-height:30px; padding:0 10px;'))
+    .join('');
+
+  // --- Code snippet ---
+  document.getElementById('align-code').innerHTML =
+    `${hl('p','.grid')} ${hl('p','{')}` +
+    `\n  ${hl('k','display')}: ${hl('v','grid')};` +
+    `\n  ${hl('k','grid-template-columns')}: ${hl('v','repeat(3, 80px)')};` +
+    `\n  ${hl('k','justify-items')}: ${hl('v', ji)};` +
+    `\n  ${hl('k','align-items')}: ${hl('v', ai)};` +
+    `\n  ${hl('k','justify-content')}: ${hl('v', jc)};` +
+    `\n  ${hl('k','align-content')}: ${hl('v', ac)};` +
+    `\n${hl('p','}')}`;
+}
+
+
+/* ----------------------------------------------------------
+   7. INITIALISATION
+   Run all four update functions when the page first loads
+   so the previews and code blocks are pre-populated.
+---------------------------------------------------------- */
+updateBasics();
+updateSpans();
+updateAreas();
+updateAlign();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Copy Link Table</title>
+    <style>
+        body{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color:#000000 ;
+    color:#7CFC00;
+}
+
+h1{
+    text-align:center;
+    text-shadow:0 0 10px #00ff00;
+    letter-spacing:4px;
+    margin-bottom:30px;
+}
+
+a {
+    font-size: 2rem;
+    text-decoration: none;
+    color: #00ff00;
+    font-weight: 500;
+    transition: all 0.3s ease; /* Makes the hover effect smooth */
+}
+
+
+
+table{
+    width:100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td{
+    color: #000000;
+    border: 2px solid #000000;
+    padding: 8px;
+    text-align: left;
+    font-size: 18pt;
+}
+
+th{
+    background-color: #000000;
+    color: #000000;
+    text-align: center;
+    color: rgb(102, 255, 0)
+}
+
+tr:nth-child(even) {
+    background-color: #daded9;
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+tr:hover{
+    background-color: #7ee79d;
+     box-shadow: inset 0 0 10px #00ff00;
+}
+
+/* clickable links */
+.copy-link{
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.copy-link:hover{
+    color: white;
+}
+
+.table-container{
+    border:2px solid #00ff00;
+    box-shadow:
+        0 0 10px #00ff00,
+        inset 0 0 15px rgba(0,255,0,0.2);
+    padding:15px;
+    background:#252525;
+    
+}
+
+
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Resources and Useful Stuff</h1>
+
+<div class="table-container">
+    <table>
+    <tr>
+        <th>Resource</th>
+        <th>Useful For</th>
+        <th>Link</th>
+    </tr>
+
+    <tr>
+        <td>Test 1</td>
+        <td>stuff</td>
+        <td class="copy-link" data-link="www.bbc.co.uk">www...</td>
+    </tr>
+
+    <tr>
+        <td>Test 2</td>
+        <td>stuff</td>
+        <td class="copy-link">www...</td>
+    </tr>
+
+     <tr>
+        <td>Test 3</td>
+        <td>stuff</td>
+        <td class="copy-link">www...</td>
+    </tr>
+</table>
+
+
+</div>
+
+<a href="/index.html">Home</a>
+
+
+
+<script>
+document.querySelectorAll(".copy-link").forEach(link => {
+
+    link.addEventListener("click", async () => {
+
+        const text = link.dataset.link;
+
+        try {
+            await navigator.clipboard.writeText(text);
+
+            const original = link.textContent;
+
+            link.textContent = "Copied!";
+
+            setTimeout(() => {
+                link.textContent = original;
+            }, 1500);
+
+        } catch (err) {
+            alert("Copy failed");
+        }
+    });
+
+});
+</script>
+
+</body>
+</html>
