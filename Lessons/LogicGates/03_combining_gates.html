@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Building Logic Circuits</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  background:#0a0e17;
+  color:#c9d8e8;
+  font-family:monospace;
+  font-size:12pt;
+  padding:40px 20px;
+}
+
+h1{
+  color:#00d4ff;
+  text-transform:uppercase;
+  letter-spacing:.2em;
+  margin-bottom:8px;
+}
+
+h2{
+  color:#00d4ff;
+  margin-top:16px;
+  margin-bottom:8px;
+}
+
+p.intro{
+  color:#c9d8e8;
+  font-size:11pt;
+  line-height:1.7;
+  margin-bottom:24px;
+}
+
+p.desc{
+  color:#c9d8e8;
+  font-size:11pt;
+  line-height:1.6;
+  margin-bottom:10px;
+}
+
+.insight{
+  font-size:11pt;
+  color:#c9d8e8;
+  border-left:2px solid #00d4ff;
+  padding:.7rem 1rem;
+  margin-bottom:12px;
+  background:#111827;
+  line-height:1.7;
+}
+
+.insight strong{
+  color:#00d4ff;
+}
+
+input[type=checkbox]{
+  appearance:none;
+  background:#f53d3d;
+  width:20px;
+  height:20px;
+  border:2px solid #4a6480;
+  cursor:pointer;
+  flex-shrink:0;
+}
+
+input[type=checkbox]:checked{
+  background:rgba(0,255,153,.2);
+  border-color:#00ff99;
+  box-shadow:0 0 10px rgba(0,255,153,.5);
+}
+
+.gate{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  background:#111827;
+  border:2px solid #1e3a5f;
+  width:fit-content;
+  padding:10px;
+  margin-bottom:10px;
+}
+
+.inputs{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.irow{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:11pt;
+}
+
+.irow span{
+  width:18px;
+}
+
+.outputs{
+  display:flex;
+  gap:14px;
+  margin-top:14px;
+}
+
+.out-col{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+}
+
+.out-bubble{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  border:2px solid #4a6480;
+  background:#0a0e17;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13pt;
+  color:#4a6480;
+  transition:.2s;
+}
+
+.out-bubble.on{
+  background:rgba(0,255,153,.15);
+  border-color:#00ff99;
+  color:#00ff99;
+  box-shadow:0 0 8px rgba(0,255,153,.4);
+}
+
+.out-lbl{
+  font-size:9pt;
+  color:#4a6480;
+}
+
+table{
+  margin-top:5px;
+  border:2px solid #1e3a5f;
+  border-collapse:collapse;
+  font-size:11pt;
+  text-align:center;
+  margin-bottom:24px;
+}
+
+td,th{
+  border:1px solid #1e3a5f;
+  padding:4px 18px;
+}
+
+th{
+  color:#00d4ff;
+}
+
+tr.active td{
+  background:rgba(0,255,153,.12);
+  color:#00ff99;
+}
+
+hr{
+  border:none;
+  border-top:1px solid #1e3a5f;
+  margin:26px 0;
+}
+
+canvas{
+  display:block;
+}
+
+.next-btn{
+  color:#00ff99;
+  font-size:14pt;
+  text-decoration:none;
+  display:inline-block;
+  margin-top:10px;
+  border:1px solid #1e3a5f;
+  padding:8px 16px;
+  background:#111827;
+}
+
+.next-btn:hover{
+  border-color:#00ff99;
+  background:rgba(0,255,153,.08);
+}
+
+a {
+    color: rgb(0, 255, 145);
+    font-size: 14pt;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 8px;
+    border: 1px solid #1e3a5f;
+    padding: 6px 16px;
+    background: #111827;
+    }
+</style>
+</head>
+
+<body>
+
+<h1>Building logic circuits</h1>
+
+<p class="intro">
+Single gates are building blocks.
+Connect them together and you can create circuits that make decisions and process information.
+<br><br>
+The first few examples should feel familiar...
+</p>
+
+<!-- NAND -->
+
+<h2>AND → NOT = NAND</h2>
+
+<p class="desc">
+Feed the output of an AND gate into a NOT gate.
+The result is only 0 when both inputs are 1.
+</p>
+
+<div class="gate">
+  <div class="inputs">
+    <div class="irow"><span>A</span><input type="checkbox" id="n1A"></div>
+    <div class="irow"><span>B</span><input type="checkbox" id="n1B"></div>
+  </div>
+
+  <canvas id="c1" width="300" height="80"></canvas>
+
+  <div class="outputs">
+    <div class="out-col">
+      <div class="out-bubble" id="b1and">0</div>
+      <span class="out-lbl">AND</span>
+    </div>
+
+    <div class="out-col">
+      <div class="out-bubble on" id="b1q">1</div>
+      <span class="out-lbl">Q</span>
+    </div>
+  </div>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>AND</th>
+<th>Q (NAND)</th>
+</tr>
+</thead>
+
+<tbody id="tb1">
+<tr data-a="0" data-b="0"><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+<tr data-a="0" data-b="1"><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+<tr data-a="1" data-b="0"><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+<tr data-a="1" data-b="1"><td>1</td><td>1</td><td>1</td><td>0</td></tr>
+</tbody>
+</table>
+
+<hr>
+<br><br>
+<!-- NOR -->
+
+<h2>OR → NOT = NOR</h2>
+
+<p class="desc">
+An OR gate followed by a NOT gate.
+The output is 1 only when both inputs are 0.
+</p>
+
+<div class="gate">
+  <div class="inputs">
+    <div class="irow"><span>A</span><input type="checkbox" id="n2A"></div>
+    <div class="irow"><span>B</span><input type="checkbox" id="n2B"></div>
+  </div>
+
+  <canvas id="c2" width="300" height="80"></canvas>
+
+  <div class="outputs">
+    <div class="out-col">
+      <div class="out-bubble" id="b2or">0</div>
+      <span class="out-lbl">OR</span>
+    </div>
+
+    <div class="out-col">
+      <div class="out-bubble on" id="b2q">1</div>
+      <span class="out-lbl">Q</span>
+    </div>
+  </div>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>OR</th>
+<th>Q (NOR)</th>
+</tr>
+</thead>
+
+<tbody id="tb2">
+<tr data-a="0" data-b="0"><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+<tr data-a="0" data-b="1"><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+<tr data-a="1" data-b="0"><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+<tr data-a="1" data-b="1"><td>1</td><td>1</td><td>1</td><td>0</td></tr>
+</tbody>
+</table>
+
+<hr>
+<br><br>
+<!-- AND + OR -->
+
+<h2>AND + OR (three inputs)</h2>
+
+<p class="desc">
+A and B feed an AND gate.
+That result, plus a third input C, feed an OR gate.
+</p>
+
+<div class="insight">
+<strong>Logic formula:</strong><br><br>
+Q = (A AND B) OR C
+</div>
+
+<div class="gate">
+  <div class="inputs">
+    <div class="irow"><span>A</span><input type="checkbox" id="n3A"></div>
+    <div class="irow"><span>B</span><input type="checkbox" id="n3B"></div>
+    <div class="irow"><span>C</span><input type="checkbox" id="n3C"></div>
+  </div>
+
+  <canvas id="c3" width="300" height="110"></canvas>
+
+  <div class="outputs">
+    <div class="out-col">
+      <div class="out-bubble" id="b3and">0</div>
+      <span class="out-lbl">A·B</span>
+    </div>
+
+    <div class="out-col">
+      <div class="out-bubble" id="b3q">0</div>
+      <span class="out-lbl">Q</span>
+    </div>
+  </div>
+</div>
+
+<hr>
+<br><br>
+
+<!-- ALARM -->
+
+<h2>Advanced alarm circuit</h2>
+
+<p class="desc">
+The alarm activates if the system is armed AND the door opens,
+or if the panic button is pressed.
+</p>
+
+<div class="insight">
+<strong>Formula:</strong><br><br>
+Q = (Door AND Armed) OR Panic
+</div>
+
+<div class="gate">
+  <div class="inputs">
+    <div class="irow"><span>D</span><input type="checkbox" id="n4A"></div>
+    <div class="irow"><span>A</span><input type="checkbox" id="n4B"></div>
+    <div class="irow"><span>P</span><input type="checkbox" id="n4C"></div>
+  </div>
+
+  <canvas id="c4" width="320" height="120"></canvas>
+
+  <div class="outputs">
+    <div class="out-col">
+      <div class="out-bubble" id="b4q">0</div>
+      <span class="out-lbl">ALARM</span>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<a href="04_half_adder.html">Next lesson: half adder</a>
+
+
+
+<script>
+
+const WIRE_OFF='#4a6480';
+const WIRE_ON='#00ff99';
+const GATE='#00d4ff';
+const GATE2='#a78bfa';
+const TXT='#c9d8e8';
+
+function wc(on){return on?WIRE_ON:WIRE_OFF;}
+
+function ctx(id){
+  const c=document.getElementById(id);
+  const x=c.getContext('2d');
+  x.clearRect(0,0,c.width,c.height);
+  x.lineWidth=2;
+  return x;
+}
+
+function wire(c,x1,y1,x2,y2,on){
+  c.strokeStyle=wc(on);
+  c.beginPath();
+  c.moveTo(x1,y1);
+  c.lineTo(x2,y2);
+  c.stroke();
+}
+
+function andGate(c,x,y,w,h,col){
+  c.strokeStyle=col;
+  c.beginPath();
+  c.moveTo(x,y);
+  c.lineTo(x,y+h);
+  c.lineTo(x+w*.55,y+h);
+  c.bezierCurveTo(x+w*1.08,y+h,x+w*1.08,y,x+w*.55,y);
+  c.lineTo(x,y);
+  c.stroke();
+}
+
+function orGate(c,x,y,w,h,col){
+  c.strokeStyle=col;
+
+  c.beginPath();
+  c.moveTo(x,y);
+  c.bezierCurveTo(x+w*.30,y,x+w*.28,y+h,x,y+h);
+
+  c.moveTo(x,y);
+  c.bezierCurveTo(x+w*.32,y,x+w+10,y+h*.25,x+w+10,y+h*.5);
+
+  c.moveTo(x+w+10,y+h*.5);
+  c.bezierCurveTo(x+w+10,y+h*.75,x+w*.32,y+h,x,y+h);
+
+  c.stroke();
+}
+
+function notGate(c,x,y,col){
+  c.strokeStyle=col;
+
+  c.beginPath();
+  c.moveTo(x,y-16);
+  c.lineTo(x,y+16);
+  c.lineTo(x+28,y);
+  c.closePath();
+  c.stroke();
+
+  c.beginPath();
+  c.arc(x+36,y,6,0,Math.PI*2);
+  c.stroke();
+}
+
+function bubble(id,val){
+  const b=document.getElementById(id);
+  b.textContent=val;
+  b.classList.toggle('on',val===1);
+}
+
+function highlight(tb,vals){
+  document.querySelectorAll('#'+tb+' tr').forEach(r=>{
+    const ok=Object.entries(vals).every(([k,v])=>r.dataset[k]===String(v));
+    r.classList.toggle('active',ok);
+  });
+}
+
+function draw1(a,b){
+  const c=ctx('c1');
+
+  const and=a&b;
+  const q=and?0:1;
+
+  wire(c,0,25,50,25,a);
+  wire(c,0,55,50,55,b);
+
+  andGate(c,50,10,56,54,GATE);
+
+  wire(c,106,37,160,37,and);
+
+  notGate(c,160,37,GATE);
+
+  wire(c,202,37,300,37,q);
+
+  bubble('b1and',and);
+  bubble('b1q',q);
+
+  highlight('tb1',{a,b});
+}
+
+function draw2(a,b){
+  const c=ctx('c2');
+
+  const or=a|b;
+  const q=or?0:1;
+
+  wire(c,0,25,50,25,a);
+  wire(c,0,55,50,55,b);
+
+  orGate(c,50,10,54,54,GATE);
+
+  wire(c,114,37,160,37,or);
+
+  notGate(c,160,37,GATE);
+
+  wire(c,202,37,300,37,q);
+
+  bubble('b2or',or);
+  bubble('b2q',q);
+
+  highlight('tb2',{a,b});
+}
+
+function draw3(a,b,cv){
+  const c=ctx('c3');
+
+  const and=a&b;
+  const q=and|cv;
+
+  wire(c,0,20,46,20,a);
+  wire(c,0,44,46,44,b);
+
+  andGate(c,46,6,52,52,GATE);
+
+  wire(c,98,32,150,32,and);
+
+  wire(c,150,32,150,78,and);
+
+  wire(c,0,78,160,78,cv);
+
+  orGate(c,150,48,50,44,GATE2);
+
+  wire(c,210,70,300,70,q);
+
+  bubble('b3and',and);
+  bubble('b3q',q);
+}
+
+function draw4(a,b,p){
+  const c=ctx('c4');
+
+  const and=a&b;
+  const q=and|p;
+
+  wire(c,0,20,46,20,a);
+  wire(c,0,44,46,44,b);
+
+  andGate(c,46,6,52,52,GATE);
+
+  wire(c,98,32,150,32,and);
+
+  wire(c,150,32,150,70,and);
+
+  wire(c,0,78,150,78,p);
+
+  orGate(c,150,48,50,44,GATE2);
+
+  wire(c,210,70,320,70,q);
+
+  bubble('b4q',q);
+}
+
+function bind(ids,fn){
+  ids.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.onchange=fn;
+  });
+}
+
+function upd1(){
+  draw1(+n1A.checked,+n1B.checked);
+}
+
+function upd2(){
+  draw2(+n2A.checked,+n2B.checked);
+}
+
+function upd3(){
+  draw3(+n3A.checked,+n3B.checked,+n3C.checked);
+}
+
+function upd4(){
+  draw4(+n4A.checked,+n4B.checked,+n4C.checked);
+}
+
+bind(['n1A','n1B'],upd1);
+bind(['n2A','n2B'],upd2);
+bind(['n3A','n3B','n3C'],upd3);
+bind(['n4A','n4B','n4C'],upd4);
+
+upd1();
+upd2();
+upd3();
+upd4();
+
+</script>
+
+</body>
+</html>

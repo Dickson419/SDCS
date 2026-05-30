@@ -1,0 +1,76 @@
+body{
+    background: #0a0e17;
+    color: #c9d8e8;
+    font-family: monospace;
+    font-size: 12pt;
+    padding: 40px 20px;
+}
+
+h1{
+    color: #00d4ff;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+}
+
+h2{
+    color:#00d4ff;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+input[type="checkbox"]{
+    appearance: none; /*create a blank slate */
+    /* make our own checkbox style */
+    background: #f53d3d;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #4a6480;
+    cursor:pointer;
+}
+input[type="checkbox"]:checked{
+    background: rgba(0, 255, 153, 0.2);
+    border-color: #00ff99;
+    box-shadow: 0,0,10px rgba(0, 255, 153, 0.5);
+}
+
+.gate{
+    display: flex;
+    align-items: center;
+    gap:10px;
+
+    background-color: #111847;
+    border: 2px solid #1e3a5f;
+    width:fit-content;
+    padding: 10px;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+table{
+    margin-top: 5px;
+    border: 2px solid #1e3a5f;
+    border-collapse: collapse;
+    font-size: 14pt;
+    text-align: center;
+}
+ td, th {
+       border: 1px solid #1e3a5f;
+   }
+th {
+    padding: 5px 30px; /* top/bottom  left/right */
+}
+
+a {
+      color: rgb(0, 255, 145);
+      font-size: 14pt;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 8px;
+      border: 1px solid #1e3a5f;
+      padding: 6px 16px;
+      background: #111827;
+    }

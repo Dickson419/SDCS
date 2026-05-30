@@ -1,0 +1,575 @@
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0e17;color:#c9d8e8;font-family:monospace;font-size:12pt;padding:40px 20px}
+h1{color:#00d4ff;text-transform:uppercase;letter-spacing:.2em;margin-bottom:8px}
+h2{color:#00d4ff;margin-top:16px;margin-bottom:8px}
+p.intro{font-size:11pt;line-height:1.7;margin-bottom:24px}
+p.desc{font-size:11pt;line-height:1.6;margin-bottom:10px}
+.step-tag{display:inline-block;font-size:10pt;padding:2px 8px;border:1px solid #1e3a5f;color:#00d4ff;margin-bottom:6px;letter-spacing:.1em;text-transform:uppercase}
+.insight{font-size:11pt;border-left:2px solid #00d4ff;padding:.7rem 1rem;margin-bottom:12px;background:#111827;line-height:1.7}
+.insight strong{color:#00d4ff}
+
+input[type=checkbox]{
+appearance:none;
+background:#f53d3d;
+width:20px;
+height:20px;
+border:2px solid #4a6480;
+cursor:pointer;
+flex-shrink:0
+}
+
+input[type=checkbox]:checked{
+background:rgba(0,255,153,.2);
+border-color:#00ff99;
+box-shadow:0 0 10px rgba(0,255,153,.5)
+}
+
+.gate{
+display:flex;
+align-items:center;
+gap:10px;
+background:#111827;
+border:2px solid #1e3a5f;
+width:fit-content;
+padding:10px;
+margin-bottom:12px
+}
+
+.inputs{
+display:flex;
+flex-direction:column;
+gap:20px
+}
+
+.irow{
+display:flex;
+align-items:center;
+gap:8px;
+font-size:11pt
+}
+
+.irow span{
+width:24px
+}
+
+.outputs{
+display:flex;
+gap:14px
+}
+
+.out-col{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:4px
+}
+
+.out-bubble{
+width:40px;
+height:40px;
+border-radius:50%;
+border:2px solid #4a6480;
+background:#0a0e17;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:13pt;
+color:#4a6480;
+transition:.2s
+}
+
+.out-bubble.on{
+background:rgba(0,255,153,.15);
+border-color:#00ff99;
+color:#00ff99;
+box-shadow:0 0 8px rgba(0,255,153,.4)
+}
+
+.out-lbl{
+font-size:9pt;
+color:#4a6480
+}
+
+table{
+margin-top:5px;
+border:2px solid #1e3a5f;
+border-collapse:collapse;
+font-size:11pt;
+text-align:center;
+margin-bottom:24px
+}
+
+td,th{
+border:1px solid #1e3a5f;
+padding:4px 18px
+}
+
+th{
+color:#00d4ff
+}
+
+tr.active td{
+background:rgba(0,255,153,.12);
+color:#00ff99
+}
+
+canvas{
+display:block
+}
+</style>
+
+<h1>The Full Adder</h1>
+
+<p class="intro">
+A half adder can only add two bits.
+A full adder adds three:
+<br><br>
+A + B + Carry-In
+<br><br>
+This is how computers add larger binary numbers one column at a time.
+</p>
+
+<div class="step-tag">Step 1</div>
+
+<h2>First half adder</h2>
+
+<p class="desc">
+The first XOR calculates a temporary sum from A and B.
+The first AND calculates a carry if both A and B are 1.
+</p>
+
+<div class="gate">
+<div class="inputs">
+<div class="irow"><span>A</span><input type="checkbox" id="a"></div>
+<div class="irow"><span>B</span><input type="checkbox" id="b"></div>
+<div class="irow"><span>Cin</span><input type="checkbox" id="cin"></div>
+</div>
+
+<canvas id="cv" width="520" height="180"></canvas>
+
+<div class="outputs">
+
+<div class="out-col">
+<div class="out-bubble" id="s1">0</div>
+<span class="out-lbl">A⊕B</span>
+</div>
+
+<div class="out-col">
+<div class="out-bubble" id="c1">0</div>
+<span class="out-lbl">A·B</span>
+</div>
+
+<div class="out-col">
+<div class="out-bubble" id="sum">0</div>
+<span class="out-lbl">SUM</span>
+</div>
+
+<div class="out-col">
+<div class="out-bubble" id="cout">0</div>
+<span class="out-lbl">CARRY</span>
+</div>
+
+</div>
+</div>
+
+<div class="insight">
+<strong>How it works:</strong><br><br>
+
+1. XOR(A,B) creates a temporary sum.<br>
+2. That temporary sum is added to Carry-In using another XOR.<br>
+3. Two AND gates detect carry conditions.<br>
+4. An OR gate combines the carry outputs into one final Carry-Out.
+</div>
+
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>Cin</th>
+<th>SUM</th>
+<th>CARRY</th>
+<th>Decimal</th>
+</tr>
+</thead>
+
+<tbody id="tb">
+
+
+
+    
+
+<tr data-a="0" data-b="0" data-c="0">
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+</tr>
+
+<tr data-a="0" data-b="0" data-c="1">
+<td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td>
+</tr>
+
+<tr data-a="0" data-b="1" data-c="0">
+<td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td>
+</tr>
+
+<tr data-a="0" data-b="1" data-c="1">
+<td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>2</td>
+</tr>
+
+<tr data-a="1" data-b="0" data-c="0">
+<td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td>
+</tr>
+
+<tr data-a="1" data-b="0" data-c="1">
+<td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>2</td>
+</tr>
+
+<tr data-a="1" data-b="1" data-c="0">
+<td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>2</td>
+</tr>
+
+<tr data-a="1" data-b="1" data-c="1">
+<td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>3</td>
+</tr>
+
+</tbody>
+</table>
+
+
+<br><br><br>
+<hr>
+<hr>
+<br><br><br>
+
+
+<div class="step-tag">Worked examples</div>
+
+<h2>Following the signals</h2>
+
+<p class="desc">
+A full adder works by combining two half adders and an OR gate.
+Here are some real examples showing every intermediate step.
+</p>
+
+<div class="insight">
+<strong>Reminder:</strong><br><br>
+
+Temporary Sum = A XOR B<br>
+Carry₁ = A AND B<br><br>
+
+Final Sum = Temporary Sum XOR Cin<br>
+Carry₂ = Temporary Sum AND Cin<br><br>
+
+Final Carry = Carry₁ OR Carry₂
+</div>
+
+<h2>Example 1 — 1 + 0 + 0</h2>
+
+<table>
+<tr><th>Step</th><th>Result</th></tr>
+
+<tr>
+<td>A XOR B</td>
+<td>1 XOR 0 = 1</td>
+</tr>
+
+<tr>
+<td>A AND B</td>
+<td>1 AND 0 = 0</td>
+</tr>
+
+<tr>
+<td>Temporary Sum XOR Cin</td>
+<td>1 XOR 0 = 1</td>
+</tr>
+
+<tr>
+<td>Temporary Sum AND Cin</td>
+<td>1 AND 0 = 0</td>
+</tr>
+
+<tr>
+<td>Final Carry</td>
+<td>0 OR 0 = 0</td>
+</tr>
+
+<tr class="active">
+<td>Answer</td>
+<td>SUM = 1, CARRY = 0</td>
+</tr>
+</table>
+
+<div class="insight">
+Binary result:
+<br><br>
+1 + 0 + 0 = 1
+</div>
+
+<hr>
+
+<h2>Example 2 — 1 + 1 + 0</h2>
+
+<table>
+<tr><th>Step</th><th>Result</th></tr>
+
+<tr>
+<td>A XOR B</td>
+<td>1 XOR 1 = 0</td>
+</tr>
+
+<tr>
+<td>A AND B</td>
+<td>1 AND 1 = 1</td>
+</tr>
+
+<tr>
+<td>Temporary Sum XOR Cin</td>
+<td>0 XOR 0 = 0</td>
+</tr>
+
+<tr>
+<td>Temporary Sum AND Cin</td>
+<td>0 AND 0 = 0</td>
+</tr>
+
+<tr>
+<td>Final Carry</td>
+<td>1 OR 0 = 1</td>
+</tr>
+
+<tr class="active">
+<td>Answer</td>
+<td>SUM = 0, CARRY = 1</td>
+</tr>
+</table>
+
+<div class="insight">
+Binary result:
+<br><br>
+10₂ = decimal 2
+</div>
+
+<hr>
+
+
+<h2>Example 3 — 1 + 1 + 1</h2>
+
+<table>
+<tr><th>Step</th><th>Result</th></tr>
+
+<tr>
+<td>A XOR B</td>
+<td>1 XOR 1 = 0</td>
+</tr>
+
+<tr>
+<td>A AND B</td>
+<td>1 AND 1 = 1</td>
+</tr>
+
+<tr>
+<td>Temporary Sum XOR Cin</td>
+<td>0 XOR 1 = 1</td>
+</tr>
+
+<tr>
+<td>Temporary Sum AND Cin</td>
+<td>0 AND 1 = 0</td>
+</tr>
+
+<tr>
+<td>Final Carry</td>
+<td>1 OR 0 = 1</td>
+</tr>
+
+<tr class="active">
+<td>Answer</td>
+<td>SUM = 1, CARRY = 1</td>
+</tr>
+</table>
+
+<div class="insight">
+Binary result:
+<br><br>
+11₂ = decimal 3
+</div>
+
+<script>
+const OFF='#4a6480';
+const ON='#00ff99';
+const G1='#00d4ff';
+const G2='#a78bfa';
+
+function wc(v){return v?ON:OFF;}
+
+function ctx(){
+const c=document.getElementById('cv');
+const x=c.getContext('2d');
+x.clearRect(0,0,c.width,c.height);
+x.lineWidth=2;
+return x;
+}
+
+function wire(c,x1,y1,x2,y2,on){
+c.strokeStyle=wc(on);
+c.beginPath();
+c.moveTo(x1,y1);
+c.lineTo(x2,y2);
+c.stroke();
+}
+
+function path(c,p,on){
+c.strokeStyle=wc(on);
+c.beginPath();
+c.moveTo(p[0][0],p[0][1]);
+for(let i=1;i<p.length;i++)c.lineTo(p[i][0],p[i][1]);
+c.stroke();
+}
+
+function txt(c,t,x,y,col){
+c.fillStyle=col||'#c9d8e8';
+c.font='10px monospace';
+c.fillText(t,x,y);
+}
+
+function xor(c,x,y,w,h,col){
+c.strokeStyle=col;
+
+c.beginPath();
+c.moveTo(x-8,y);
+c.bezierCurveTo(x+w*.18,y,x+w*.18,y+h,x-8,y+h);
+c.stroke();
+
+c.beginPath();
+c.moveTo(x,y);
+c.bezierCurveTo(x+w*.32,y,x+w*.32,y+h,x,y+h);
+
+c.moveTo(x,y);
+c.bezierCurveTo(x+w*.32,y,x+w+10,y+h*.25,x+w+10,y+h*.5);
+
+c.moveTo(x+w+10,y+h*.5);
+c.bezierCurveTo(x+w+10,y+h*.75,x+w*.32,y+h,x,y+h);
+
+c.stroke();
+}
+
+function andGate(c,x,y,w,h,col){
+c.strokeStyle=col;
+
+c.beginPath();
+c.moveTo(x,y);
+c.lineTo(x,y+h);
+c.lineTo(x+w*.55,y+h);
+
+c.bezierCurveTo(
+x+w*1.08,y+h,
+x+w*1.08,y,
+x+w*.55,y
+);
+
+c.lineTo(x,y);
+c.stroke();
+}
+
+function orGate(c,x,y,w,h,col){
+c.strokeStyle=col;
+
+c.beginPath();
+c.moveTo(x,y);
+c.bezierCurveTo(x+w*.28,y,x+w*.28,y+h,x,y+h);
+
+c.moveTo(x,y);
+c.bezierCurveTo(x+w*.32,y,x+w+10,y+h*.25,x+w+10,y+h*.5);
+
+c.moveTo(x+w+10,y+h*.5);
+c.bezierCurveTo(x+w+10,y+h*.75,x+w*.32,y+h,x,y+h);
+
+c.stroke();
+}
+
+function bubble(id,v){
+const b=document.getElementById(id);
+b.textContent=v;
+b.classList.toggle('on',v===1);
+}
+
+function highlight(a,b,c){
+document.querySelectorAll('#tb tr').forEach(r=>{
+const ok=
+r.dataset.a==a &&
+r.dataset.b==b &&
+r.dataset.c==c;
+
+r.classList.toggle('active',ok);
+});
+}
+
+function draw(){
+
+const a=+document.getElementById('a').checked;
+const b=+document.getElementById('b').checked;
+const cin=+document.getElementById('cin').checked;
+
+const xor1=a^b;
+const carry1=a&b;
+
+const sum=xor1^cin;
+const carry2=xor1&cin;
+
+const carry=carry1|carry2;
+
+const c=ctx();
+
+wire(c,0,30,70,30,a);
+wire(c,0,60,70,60,b);
+
+txt(c,'A',10,24);
+txt(c,'B',10,54);
+txt(c,'Cin',10,118);
+
+xor(c,70,12,54,56,G1);
+txt(c,'XOR',100,46,G1);
+
+wire(c,134,40,220,40,xor1);
+
+andGate(c,70,86,54,42,G2);
+txt(c,'AND',98,112,G2);
+
+wire(c,124,107,220,107,carry1);
+
+wire(c,0,115,220,115,cin);
+
+xor(c,220,20,54,56,G1);
+txt(c,'XOR',250,54,G1);
+
+wire(c,284,48,520,48,sum);
+
+andGate(c,220,92,54,42,G2);
+txt(c,'AND',248,118,G2);
+
+wire(c,284,113,350,113,carry2);
+
+path(c,[[220,107],[350,107]],carry1);
+
+orGate(c,350,82,54,48,'#00ff99');
+txt(c,'OR',382,110,'#00ff99');
+
+wire(c,414,106,520,106,carry);
+
+txt(c,'SUM',470,42);
+txt(c,'CARRY',460,100);
+
+bubble('s1',xor1);
+bubble('c1',carry1);
+bubble('sum',sum);
+bubble('cout',carry);
+
+highlight(a,b,cin);
+}
+
+['a','b','cin'].forEach(id=>{
+document.getElementById(id).onchange=draw;
+});
+
+draw();
+</script>

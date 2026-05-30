@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RGB Colour Viewer</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+
+</head>
+
+
+<body>
+    <h1>RGB - Colour Visualisation</h1>
+
+    <div class="controls">
+
+        <div>
+            <span class="red">Red:</span>
+            <input type="range" min="0" max="255" value="120" id="r">
+            <span id="rValue">120</span>
+        </div>
+
+        <div>
+            <span class="green">Green:</span>
+            <input type="range" min="0" max="255" value="120" id="g">
+            <span id="gValue">120</span>
+        </div>
+
+        <div>
+            <span class="blue">Blue:</span>
+            <input type="range" min="0" max="255" value="120" id="b">
+            <span id="bValue">120</span>
+        </div>
+
+    </div>
+
+    <div class="colourBoxes">
+        
+        <div class="colourItem">
+            <h2>Original Colour</h2>
+            <div class="box" id="colourBox"></div>
+        </div>
+
+        <div class="colourItem">
+            <h2>Lightness (Grayscale)</h2>
+            <div class="box" id="grayscaleBox"></div>
+        </div>
+    </div>
+
+    
+
+    <div>
+        <p>Lightness value: <strong id="lightnessValue"></strong> </p>
+        <pre id="asciiChar"></pre>
+    </div>
+
+    <input type="file" id="imageInput" accept="image/*">
+    
+    
+    <div class="asciiCanvas">    
+        <canvas id="canvas" hidden></canvas>
+        <pre id="asciiOutput"></pre>
+    </div>
+
+    <br><br>
+    <a href="/index.html">Home</a>
+
+</body>
+
+
+
+</html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logic Gates</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+    body {
+      background: #0a0e17;
+      color: #c9d8e8;
+      font-family: monospace;
+      font-size: 12pt;
+      padding: 40px 20px;
+    }
+ 
+    h1 {
+      color: #00d4ff;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 12px;
+    }
+ 
+    h2 {
+      color: #00d4ff;
+      margin-top: 16px;
+      margin-bottom: 8px;
+    }
+ 
+    .intro {
+      color: #c9d8e8;
+      font-size: 11pt;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+ 
+    .intro em {
+      color: #00ff99;
+      font-style: italic;
+    }
+ 
+    .desc {
+      font-size: 11pt;
+      color: #c9d8e8;
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+ 
+    .section {
+      margin-bottom: 2rem;
+    }
+ 
+    .gate-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background-color: #111827;
+      border: 2px solid #1e3a5f;
+      width: fit-content;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+ 
+    .inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+ 
+    .irow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11pt;
+    }
+ 
+    .irow span {
+      width: 18px;
+      color: #c9d8e8;
+    }
+ 
+    input[type="checkbox"] {
+      appearance: none;
+      background: #f53d3d;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #4a6480;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+ 
+    input[type="checkbox"]:checked {
+      background: rgba(0, 255, 153, 0.2);
+      border-color: #00ff99;
+      box-shadow: 0 0 10px rgba(0, 255, 153, 0.5);
+    }
+ 
+    canvas { display: block; }
+ 
+    .out-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 10pt;
+      color: #4a6480;
+    }
+ 
+    .out-bubble {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid #4a6480;
+      background: #0a0e17;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13pt;
+      font-family: monospace;
+      color: #4a6480;
+      transition: all 0.2s;
+    }
+ 
+    .out-bubble.on {
+      background: rgba(0, 255, 153, 0.15);
+      border-color: #00ff99;
+      color: #00ff99;
+      box-shadow: 0 0 8px rgba(0, 255, 153, 0.4);
+    }
+ 
+    table {
+      margin-top: 5px;
+      border: 2px solid #1e3a5f;
+      border-collapse: collapse;
+      font-size: 11pt;
+      text-align: center;
+      margin-bottom: 0;
+    }
+ 
+    td, th {
+      border: 1px solid #1e3a5f;
+      color: #c9d8e8;
+    }
+ 
+    th {
+      padding: 5px 30px;
+      color: #00d4ff;
+    }
+ 
+    td {
+      padding: 4px 20px;
+    }
+ 
+    tr.active td {
+      background: rgba(0, 255, 153, 0.12);
+      color: #00ff99;
+      font-weight: 500;
+    }
+ 
+    hr.divider {
+      border: none;
+      border-top: 1px solid #1e3a5f;
+      margin: 2rem 0;
+    }
+ 
+    a {
+      color: rgb(0, 255, 145);
+      font-size: 14pt;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 8px;
+      border: 1px solid #1e3a5f;
+      padding: 6px 16px;
+      background: #111827;
+    }
+ 
+    a:hover {
+      border-color: #00ff99;
+      background: rgba(0, 255, 153, 0.08);
+    }
+  </style>
+</head>
+<body>
+ 
+<h1>New Logic Gates</h1>
+<p class="intro">
+  Toggle the inputs on the left and watch how the output Q changes.<br><br>
+  Do you see the link between A and B and the output?<br><br>
+  Do you understand the <em>truth table</em> below each gate?
+  <br><br>
+  Toggle the inputs and outputs for each gate <em>MULTIPLE TIMES</em> until you are confident in how it works 
+  and how it is different to the previous gates you have looked at.
+</p>
+ 
+ 
+
+ <br><br>
+<!-- NAND -->
+<div class="section">
+  <h2>NAND gate</h2>
+  <p class="desc">NOT after AND — output is 0 only when both inputs are 1.</p>
+  <div class="gate-row">
+    <div class="inputs">
+      <div class="irow"><span>A</span><input type="checkbox" id="nandA"></div>
+      <div class="irow"><span>B</span><input type="checkbox" id="nandB"></div>
+    </div>
+    <canvas id="nandCanvas" width="200" height="80"></canvas>
+    <div class="out-label"><div class="out-bubble on" id="nandOut">1</div><span>Q</span></div>
+  </div>
+  <table>
+    <thead><tr><th>Input A</th><th>Input B</th><th>Output Q</th></tr></thead>
+    <tbody id="nandTbody">
+      <tr data-a="0" data-b="0"><td>0</td><td>0</td><td>1</td></tr>
+      <tr data-a="0" data-b="1"><td>0</td><td>1</td><td>1</td></tr>
+      <tr data-a="1" data-b="0"><td>1</td><td>0</td><td>1</td></tr>
+      <tr data-a="1" data-b="1"><td>1</td><td>1</td><td>0</td></tr>
+    </tbody>
+  </table>
+</div>
+ 
+<hr class="divider">
+ 
+<!-- NOR -->
+<div class="section">
+  <h2>NOR gate</h2>
+  <p class="desc">NOT after OR — output is 1 only when both inputs are 0.</p>
+  <div class="gate-row">
+    <div class="inputs">
+      <div class="irow"><span>A</span><input type="checkbox" id="norA"></div>
+      <div class="irow"><span>B</span><input type="checkbox" id="norB"></div>
+    </div>
+    <canvas id="norCanvas" width="200" height="80"></canvas>
+    <div class="out-label"><div class="out-bubble on" id="norOut">1</div><span>Q</span></div>
+  </div>
+  <table>
+    <thead><tr><th>Input A</th><th>Input B</th><th>Output Q</th></tr></thead>
+    <tbody id="norTbody">
+      <tr data-a="0" data-b="0"><td>0</td><td>0</td><td>1</td></tr>
+      <tr data-a="0" data-b="1"><td>0</td><td>1</td><td>0</td></tr>
+      <tr data-a="1" data-b="0"><td>1</td><td>0</td><td>0</td></tr>
+      <tr data-a="1" data-b="1"><td>1</td><td>1</td><td>0</td></tr>
+    </tbody>
+  </table>
+</div>
+ 
+<hr class="divider">
+ 
+<!-- XOR -->
+<div class="section">
+  <h2>XOR gate</h2>
+  <p class="desc">Exclusive OR — output is 1 only when the inputs are <em style="color:#00ff99">different</em>.</p>
+  <div class="gate-row">
+    <div class="inputs">
+      <div class="irow"><span>A</span><input type="checkbox" id="xorA"></div>
+      <div class="irow"><span>B</span><input type="checkbox" id="xorB"></div>
+    </div>
+    <canvas id="xorCanvas" width="200" height="80"></canvas>
+    <div class="out-label"><div class="out-bubble" id="xorOut">0</div><span>Q</span></div>
+  </div>
+  <table>
+    <thead><tr><th>Input A</th><th>Input B</th><th>Output Q</th></tr></thead>
+    <tbody id="xorTbody">
+      <tr data-a="0" data-b="0"><td>0</td><td>0</td><td>0</td></tr>
+      <tr data-a="0" data-b="1"><td>0</td><td>1</td><td>1</td></tr>
+      <tr data-a="1" data-b="0"><td>1</td><td>0</td><td>1</td></tr>
+      <tr data-a="1" data-b="1"><td>1</td><td>1</td><td>0</td></tr>
+    </tbody>
+  </table>
+</div>
+ 
+<br><br>
+<a href="03_combining_gates.html">Next lesson: combining gates</a>
+ 
+<script>
+  const WIRE_OFF = '#4a6480';
+  const WIRE_ON  = '#00ff99';
+  const GATE_COL = '#00d4ff';
+  const TXT_COL  = '#c9d8e8';
+ 
+  function wc(on) { return on ? WIRE_ON : WIRE_OFF; }
+ 
+  function baseCtx(id) {
+    const cv = document.getElementById(id);
+    if (!cv) return null;
+    const ctx = cv.getContext('2d');
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    ctx.lineWidth = 2;
+    return ctx;
+  }
+ 
+  function drawNAND(id, inA, inB, out) {
+    const ctx = baseCtx(id); if (!ctx) return;
+    ctx.strokeStyle = wc(inA); ctx.beginPath(); ctx.moveTo(0,22); ctx.lineTo(44,22); ctx.stroke();
+    ctx.strokeStyle = wc(inB); ctx.beginPath(); ctx.moveTo(0,58); ctx.lineTo(44,58); ctx.stroke();
+    ctx.strokeStyle = wc(out); ctx.beginPath(); ctx.moveTo(115,40); ctx.lineTo(200,40); ctx.stroke();
+    ctx.strokeStyle = GATE_COL; ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(44,12); ctx.lineTo(44,68); ctx.lineTo(78,68);
+    ctx.bezierCurveTo(112,68,112,12,78,12); ctx.lineTo(44,12); ctx.stroke();
+    ctx.beginPath(); ctx.arc(110,40,6,0,Math.PI*2); ctx.stroke();
+    ctx.fillStyle = TXT_COL; ctx.font = '11px monospace'; ctx.textAlign = 'center';
+    ctx.fillText('NAND', 78, 44);
+  }
+ 
+  function drawNOR(id, inA, inB, out) {
+    const ctx = baseCtx(id); if (!ctx) return;
+    ctx.strokeStyle = wc(inA); ctx.beginPath(); ctx.moveTo(0,22); ctx.lineTo(52,22); ctx.stroke();
+    ctx.strokeStyle = wc(inB); ctx.beginPath(); ctx.moveTo(0,58); ctx.lineTo(52,58); ctx.stroke();
+    ctx.strokeStyle = wc(out); ctx.beginPath(); ctx.moveTo(135,40); ctx.lineTo(200,40); ctx.stroke();
+    ctx.strokeStyle = GATE_COL; ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(44,12); ctx.bezierCurveTo(60,12,60,68,44,68);
+    ctx.moveTo(44,12); ctx.bezierCurveTo(62,12,112,26,122,40);
+    ctx.moveTo(122,40); ctx.bezierCurveTo(112,54,62,68,44,68);
+    ctx.stroke();
+    ctx.beginPath(); ctx.arc(130,40,6,0,Math.PI*2); ctx.stroke();
+    ctx.fillStyle = TXT_COL; ctx.font = '11px monospace'; ctx.textAlign = 'center';
+    ctx.fillText('NOR', 84, 44);
+  }
+ 
+  function drawXOR(id, inA, inB, out) {
+    const ctx = baseCtx(id); if (!ctx) return;
+    ctx.strokeStyle = wc(inA); ctx.beginPath(); ctx.moveTo(0,22); ctx.lineTo(62,22); ctx.stroke();
+    ctx.strokeStyle = wc(inB); ctx.beginPath(); ctx.moveTo(0,58); ctx.lineTo(62,58); ctx.stroke();
+    ctx.strokeStyle = wc(out); ctx.beginPath(); ctx.moveTo(128,40); ctx.lineTo(200,40); ctx.stroke();
+    ctx.strokeStyle = GATE_COL; ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(38,12); ctx.bezierCurveTo(54,12,54,68,38,68); ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(54,12); ctx.bezierCurveTo(70,12,70,68,54,68);
+    ctx.moveTo(54,12); ctx.bezierCurveTo(72,12,118,26,128,40);
+    ctx.moveTo(128,40); ctx.bezierCurveTo(118,54,72,68,54,68);
+    ctx.stroke();
+    ctx.fillStyle = TXT_COL; ctx.font = '11px monospace'; ctx.textAlign = 'center';
+    ctx.fillText('XOR', 90, 44);
+  }
+ 
+  function setOutput(bubbleId, val) {
+    const el = document.getElementById(bubbleId);
+    if (!el) return;
+    el.textContent = val;
+    el.classList.toggle('on', val === 1);
+  }
+ 
+  function highlightRow(tbodyId, vals) {
+    document.querySelectorAll('#' + tbodyId + ' tr').forEach(tr => {
+      const match = Object.entries(vals).every(([k, v]) => tr.dataset[k] === String(v));
+      tr.classList.toggle('active', match);
+    });
+  }
+ 
+  function updateAND() {
+    const elA = document.getElementById('andA'); if (!elA) return;
+    const a = +elA.checked;
+    const b = +document.getElementById('andB').checked;
+    drawAND('andCanvas', a, b, a & b);
+    setOutput('andOut', a & b);
+    highlightRow('andTbody', {a, b});
+  }
+  function updateOR() {
+    const elA = document.getElementById('orA'); if (!elA) return;
+    const a = +elA.checked;
+    const b = +document.getElementById('orB').checked;
+    drawOR('orCanvas', a, b, a | b);
+    setOutput('orOut', a | b);
+    highlightRow('orTbody', {a, b});
+  }
+  function updateNOT() {
+    const elA = document.getElementById('notA'); if (!elA) return;
+    const a = +elA.checked;
+    const q = a ? 0 : 1;
+    drawNOT('notCanvas', a, q);
+    setOutput('notOut', q);
+    highlightRow('notTbody', {a});
+  }
+  function updateNAND() {
+    const elA = document.getElementById('nandA'); if (!elA) return;
+    const a = +elA.checked;
+    const b = +document.getElementById('nandB').checked;
+    const q = (a & b) ? 0 : 1;
+    drawNAND('nandCanvas', a, b, q);
+    setOutput('nandOut', q);
+    highlightRow('nandTbody', {a, b});
+  }
+  function updateNOR() {
+    const elA = document.getElementById('norA'); if (!elA) return;
+    const a = +elA.checked;
+    const b = +document.getElementById('norB').checked;
+    const q = (a | b) ? 0 : 1;
+    drawNOR('norCanvas', a, b, q);
+    setOutput('norOut', q);
+    highlightRow('norTbody', {a, b});
+  }
+  function updateXOR() {
+    const elA = document.getElementById('xorA'); if (!elA) return;
+    const a = +elA.checked;
+    const b = +document.getElementById('xorB').checked;
+    drawXOR('xorCanvas', a, b, a ^ b);
+    setOutput('xorOut', a ^ b);
+    highlightRow('xorTbody', {a, b});
+  }
+ 
+  function bindChange(id, fn) {
+    const el = document.getElementById(id);
+    if (el) el.onchange = fn;
+  }
+ 
+  bindChange('andA', updateAND); bindChange('andB', updateAND);
+  bindChange('orA',  updateOR);  bindChange('orB',  updateOR);
+  bindChange('notA', updateNOT);
+  bindChange('nandA',updateNAND);bindChange('nandB',updateNAND);
+  bindChange('norA', updateNOR); bindChange('norB', updateNOR);
+  bindChange('xorA', updateXOR); bindChange('xorB', updateXOR);
+ 
+  updateAND(); updateOR(); updateNOT(); updateNAND(); updateNOR(); updateXOR();
+</script>
+ 
+</body>
+</html>

@@ -1,0 +1,299 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logic Gate Scenarios</title>
+    <style>
+        body { background: #0a0e17; color: #c9d8e8; font-family: monospace; padding: 32px; }
+
+        h1 { color: #00d4ff; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+        h2 { color: #00d4ff; margin-bottom: 4px; }
+        .subtitle { color: #4a6480; font-size: 0.85rem; margin-bottom: 20px; }
+
+        .scenario {
+            background: #111827;
+            border: 1px solid #1e3a5f;
+            padding: 24px;
+            margin-bottom: 28px;
+            width: fit-content;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-row label {
+            color: #c9d8e8;
+            font-size: 0.85rem;
+            width: 80px;
+        }
+
+        input[type="checkbox"] {
+            appearance: none;
+            width: 28px;
+            height: 28px;
+            border: 2px solid #4a6480;
+            background: #0a0e17;
+            cursor: pointer;
+        }
+
+        input[type="checkbox"]:checked {
+            background: rgba(0, 255, 153, 0.2);
+            border-color: #00ff99;
+            box-shadow: 0 0 10px rgba(0, 255, 153, 0.5);
+        }
+
+        canvas { display: block; }
+
+        .output {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            color: #4a6480;
+        }
+
+        .icon {
+            font-size: 2.5rem;
+            filter: grayscale(1) brightness(0.4);
+            transition: filter 0.3s;
+        }
+
+        .icon.on {
+            filter: grayscale(0) brightness(1);
+        }
+
+        a {
+        color: rgb(0, 255, 145);
+        font-size: 14pt;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 8px;
+        border: 1px solid #1e3a5f;
+        padding: 6px 16px;
+        background: #111827;
+        }     
+    </style>
+</head>
+<body>
+
+<h1>Logic Gate Scenarios</h1>
+
+<!-- ── SCENARIO 1: Light Switch (AND) ─────────────────────────── -->
+<div class="scenario">
+    <h2>Scenario 1 — Light Switch</h2>
+    <div class="subtitle">AND gate — light only turns on if the switch is on AND power is connected</div>
+    <div class="row">
+        <div class="inputs">
+            <div class="input-row">
+                <label>Switch</label>
+                <input type="checkbox" id="s1_switch">
+            </div>
+            <div class="input-row">
+                <label>Power</label>
+                <input type="checkbox" id="s1_power">
+            </div>
+        </div>
+        <canvas id="s1_canvas" width="160" height="80"></canvas>
+        <div class="output">
+            <div class="icon" id="s1_icon">💡</div>
+            <div id="s1_label">OFF</div>
+        </div>
+    </div>
+</div>
+
+<!-- ── SCENARIO 2: Alarm System (OR) ──────────────────────────── -->
+<div class="scenario">
+    <h2>Scenario 2 — Burglar Alarm</h2>
+    <div class="subtitle">OR gate — alarm triggers if the door OR the window is opened</div>
+    <div class="row">
+        <div class="inputs">
+            <div class="input-row">
+                <label>Door</label>
+                <input type="checkbox" id="s2_door">
+            </div>
+            <div class="input-row">
+                <label>Window</label>
+                <input type="checkbox" id="s2_window">
+            </div>
+        </div>
+        <canvas id="s2_canvas" width="160" height="80"></canvas>
+        <div class="output">
+            <div class="icon" id="s2_icon">🔔</div>
+            <div id="s2_label">SAFE</div>
+        </div>
+    </div>
+</div>
+
+<!-- ── SCENARIO 3: Seatbelt Warning (NOT) ─────────────────────── -->
+<div class="scenario">
+    <h2>Scenario 3 — Seatbelt Warning</h2>
+    <div class="subtitle">NOT gate — warning shows if the seatbelt is NOT buckled</div>
+    <div class="row">
+        <div class="inputs">
+            <div class="input-row">
+                <label>Buckled</label>
+                <input type="checkbox" id="s3_buckled">
+            </div>
+        </div>
+        <canvas id="s3_canvas" width="160" height="80"></canvas>
+        <div class="output">
+            <div class="icon" id="s3_icon">⚠️</div>
+            <div id="s3_label">WARN</div>
+        </div>
+    </div>
+</div>
+
+ <div>
+        <a href="02_new_gates.html">Click for the next <em>lesson</em></a>
+    </div>
+
+
+<script>
+
+// ── Gate drawing functions ────────────────────────────────────────
+
+function drawAND(canvasId, inA, inB, out) {
+    const ctx = document.getElementById(canvasId).getContext('2d');
+    ctx.clearRect(0, 0, 160, 80);
+    ctx.lineWidth = 2;
+
+    // input wires
+    ctx.strokeStyle = inA ? '#00ff99' : '#4a6480';
+    ctx.beginPath(); ctx.moveTo(0, 20); ctx.lineTo(40, 20); ctx.stroke();
+
+    ctx.strokeStyle = inB ? '#00ff99' : '#4a6480';
+    ctx.beginPath(); ctx.moveTo(0, 60); ctx.lineTo(40, 60); ctx.stroke();
+
+    // output wire
+    ctx.strokeStyle = out ? '#00ff99' : '#4a6480';
+    ctx.beginPath(); ctx.moveTo(100, 40); ctx.lineTo(160, 40); ctx.stroke();
+
+    // gate body
+    ctx.strokeStyle = '#00d4ff';
+    ctx.beginPath();
+    ctx.moveTo(40, 10);
+    ctx.lineTo(40, 70);
+    ctx.lineTo(75, 70);
+    ctx.bezierCurveTo(110, 70, 110, 10, 75, 10);
+    ctx.lineTo(40, 10);
+    ctx.stroke();
+}
+
+function drawOR(canvasId, inA, inB, out) {
+    const ctx = document.getElementById(canvasId).getContext('2d');
+    ctx.clearRect(0, 0, 160, 80);
+    ctx.lineWidth = 2;
+
+    // input wires
+    ctx.strokeStyle = inA ? '#00ff99' : '#4a6480';
+    ctx.beginPath(); ctx.moveTo(0, 20); ctx.lineTo(40, 20); ctx.stroke();
+
+    ctx.strokeStyle = inB ? '#00ff99' : '#4a6480';
+    ctx.beginPath(); ctx.moveTo(0, 60); ctx.lineTo(40, 60); ctx.stroke();
+
+    // output wire
+    ctx.strokeStyle = out ? '#00ff99' : '#4a6480';
+    ctx.beginPath(); ctx.moveTo(120, 40); ctx.lineTo(160, 40); ctx.stroke();
+
+    // gate body
+    ctx.strokeStyle = '#00d4ff';
+    ctx.beginPath();
+    ctx.moveTo(40, 10);
+    ctx.bezierCurveTo(60, 10, 60, 70, 40, 70);  // curved back
+    ctx.moveTo(40, 10);
+    ctx.bezierCurveTo(60, 10, 110, 25, 120, 40); // top curve to point
+    ctx.moveTo(120, 40);
+    ctx.bezierCurveTo(110, 55, 60, 70, 40, 70);  // bottom curve from point
+    ctx.stroke();
+}
+
+function drawNOT(canvasId, inA, out) {
+    const ctx = document.getElementById(canvasId).getContext('2d');
+    ctx.clearRect(0, 0, 160, 80);
+    ctx.lineWidth = 2;
+
+    // input wire
+    ctx.strokeStyle = inA ? '#00ff99' : '#4a6480';
+    ctx.beginPath(); ctx.moveTo(0, 40); ctx.lineTo(50, 40); ctx.stroke();
+
+    // output wire
+    ctx.strokeStyle = out ? '#00ff99' : '#4a6480';
+    ctx.beginPath(); ctx.moveTo(124, 40); ctx.lineTo(160, 40); ctx.stroke();
+
+    // triangle
+    ctx.strokeStyle = '#00d4ff';
+    ctx.beginPath();
+    ctx.moveTo(50, 10);
+    ctx.lineTo(50, 70);
+    ctx.lineTo(110, 40);
+    ctx.lineTo(50, 10);
+    ctx.stroke();
+
+    // bubble
+    ctx.beginPath();
+    ctx.arc(117, 40, 7, 0, Math.PI * 2);
+    ctx.stroke();
+}
+
+// ── Update functions ──────────────────────────────────────────────
+
+function updateS1() {
+    const a   = document.getElementById('s1_switch').checked;
+    const b   = document.getElementById('s1_power').checked;
+    const out = a && b;
+    drawAND('s1_canvas', a, b, out);
+    document.getElementById('s1_icon').className  = 'icon' + (out ? ' on' : '');
+    document.getElementById('s1_label').textContent = out ? 'ON' : 'OFF';
+}
+
+function updateS2() {
+    const a   = document.getElementById('s2_door').checked;
+    const b   = document.getElementById('s2_window').checked;
+    const out = a || b;
+    drawOR('s2_canvas', a, b, out);
+    document.getElementById('s2_icon').className  = 'icon' + (out ? ' on' : '');
+    document.getElementById('s2_label').textContent = out ? 'ALARM!' : 'SAFE';
+}
+
+function updateS3() {
+    const a   = document.getElementById('s3_buckled').checked;
+    const out = !a;
+    drawNOT('s3_canvas', a, out);
+    document.getElementById('s3_icon').className  = 'icon' + (out ? ' on' : '');
+    document.getElementById('s3_label').textContent = out ? 'WARN' : 'OK';
+}
+
+// ── Event listeners ───────────────────────────────────────────────
+
+document.getElementById('s1_switch').onchange = updateS1;
+document.getElementById('s1_power').onchange  = updateS1;
+document.getElementById('s2_door').onchange   = updateS2;
+document.getElementById('s2_window').onchange = updateS2;
+document.getElementById('s3_buckled').onchange = updateS3;
+
+// ── Initial draw ──────────────────────────────────────────────────
+updateS1();
+updateS2();
+updateS3();
+
+</script>
+</body>
+</html>

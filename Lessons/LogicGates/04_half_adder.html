@@ -1,0 +1,303 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0e17;color:#c9d8e8;font-family:monospace;font-size:12pt;padding:40px 20px}
+h1{color:#00d4ff;text-transform:uppercase;letter-spacing:0.2em;margin-bottom:8px}
+h2{color:#00d4ff;margin-top:16px;margin-bottom:8px}
+p.intro{color:#c9d8e8;font-size:11pt;line-height:1.7;margin-bottom:24px}
+p.desc{color:#c9d8e8;font-size:11pt;line-height:1.6;margin-bottom:10px}
+.step-tag{display:inline-block;font-size:10pt;padding:2px 8px;border:1px solid #1e3a5f;color:#00d4ff;margin-bottom:6px;letter-spacing:0.1em;text-transform:uppercase}
+.insight{font-size:11pt;color:#c9d8e8;border-left:2px solid #00d4ff;padding:.6rem 1rem;margin-bottom:10px;background:#111827;line-height:1.6}
+.insight strong{color:#00d4ff}
+input[type=checkbox]{appearance:none;background:#f53d3d;width:20px;height:20px;border:2px solid #4a6480;cursor:pointer;flex-shrink:0}
+input[type=checkbox]:checked{background:rgba(0,255,153,0.2);border-color:#00ff99;box-shadow:0 0 10px rgba(0,255,153,0.5)}
+.gate{display:flex;align-items:center;gap:10px;background-color:#111827;border:2px solid #1e3a5f;width:fit-content;padding:10px;margin-bottom:10px}
+.inputs{display:flex;flex-direction:column;gap:20px}
+.irow{display:flex;align-items:center;gap:8px;font-size:11pt}
+.irow span{width:18px;color:#c9d8e8}
+.outputs{display:flex;gap:14px}
+.out-col{display:flex;flex-direction:column;align-items:center;gap:4px}
+.out-bubble{width:36px;height:36px;border-radius:50%;border:2px solid #4a6480;background:#0a0e17;display:flex;align-items:center;justify-content:center;font-size:13pt;font-family:monospace;color:#4a6480;transition:all .2s}
+.out-bubble.on{background:rgba(0,255,153,0.15);border-color:#00ff99;color:#00ff99;box-shadow:0 0 8px rgba(0,255,153,0.4)}
+.out-lbl{font-size:9pt;color:#4a6480}
+table{margin-top:5px;border:2px solid #1e3a5f;border-collapse:collapse;font-size:11pt;text-align:center;margin-bottom:20px}
+td,th{border:1px solid #1e3a5f;padding:4px 18px;color:#c9d8e8}
+th{padding:5px 22px;color:#00d4ff}
+tr.active td{background:rgba(0,255,153,0.12);color:#00ff99;font-weight:500}
+hr{border:none;border-top:1px solid #1e3a5f;margin:24px 0}
+canvas{display:block}
+a.next-btn{color:rgb(0,255,145);font-size:14pt;text-decoration:none;display:inline-block;margin-top:8px;border:1px solid #1e3a5f;padding:6px 16px;background:#111827;cursor:pointer}
+a.next-btn:hover{border-color:#00ff99;background:rgba(0,255,153,0.08)}
+a {
+    color: rgb(0, 255, 145);
+    font-size: 14pt;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 8px;
+    border: 1px solid #1e3a5f;
+    padding: 6px 16px;
+    background: #111827;
+    }
+</style>
+
+<h1>A Half Adder</h1>
+<p class="intro">This lesson builds step by step toward a half adder — a circuit that can add two binary digits.</p>
+
+<div class="step-tag">Step 1</div>
+<h2>AND → NOT = NAND</h2>
+<p class="desc">Feed the output of an AND gate into a NOT gate. Output is only 0 when both inputs are 1.</p>
+<div class="gate">
+  <div class="inputs">
+    <div class="irow"><span>A</span><input type="checkbox" id="n1A"></div>
+    <div class="irow"><span>B</span><input type="checkbox" id="n1B"></div>
+  </div>
+  <canvas id="c1" width="300" height="80"></canvas>
+  <div class="outputs">
+    <div class="out-col"><div class="out-bubble" id="b1and">0</div><span class="out-lbl">AND</span></div>
+    <div class="out-col"><div class="out-bubble on" id="b1q">1</div><span class="out-lbl">Q</span></div>
+  </div>
+</div>
+<table>
+  <thead><tr><th>A</th><th>B</th><th>AND</th><th>Q (NAND)</th></tr></thead>
+  <tbody id="tb1">
+    <tr data-a="0" data-b="0"><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+    <tr data-a="0" data-b="1"><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+    <tr data-a="1" data-b="0"><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+    <tr data-a="1" data-b="1"><td>1</td><td>1</td><td>1</td><td>0</td></tr>
+  </tbody>
+</table>
+
+<hr>
+
+<div class="step-tag">Step 2</div>
+<h2>OR → NOT = NOR</h2>
+<p class="desc">An OR gate followed by a NOT. Output is 1 only when both inputs are 0.</p>
+<div class="gate">
+  <div class="inputs">
+    <div class="irow"><span>A</span><input type="checkbox" id="n2A"></div>
+    <div class="irow"><span>B</span><input type="checkbox" id="n2B"></div>
+  </div>
+  <canvas id="c2" width="300" height="80"></canvas>
+  <div class="outputs">
+    <div class="out-col"><div class="out-bubble" id="b2or">0</div><span class="out-lbl">OR</span></div>
+    <div class="out-col"><div class="out-bubble on" id="b2q">1</div><span class="out-lbl">Q</span></div>
+  </div>
+</div>
+<table>
+  <thead><tr><th>A</th><th>B</th><th>OR</th><th>Q (NOR)</th></tr></thead>
+  <tbody id="tb2">
+    <tr data-a="0" data-b="0"><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+    <tr data-a="0" data-b="1"><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+    <tr data-a="1" data-b="0"><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+    <tr data-a="1" data-b="1"><td>1</td><td>1</td><td>1</td><td>0</td></tr>
+  </tbody>
+</table>
+
+<hr>
+
+<div class="step-tag">Step 3</div>
+<h2>AND + OR (three inputs)</h2>
+<p class="desc">A and B feed an AND gate. That result, plus a third input C, feed an OR gate. Q = (A AND B) OR C.</p>
+<div class="gate">
+  <div class="inputs">
+    <div class="irow"><span>A</span><input type="checkbox" id="n3A"></div>
+    <div class="irow"><span>B</span><input type="checkbox" id="n3B"></div>
+    <div class="irow"><span>C</span><input type="checkbox" id="n3C"></div>
+  </div>
+  <canvas id="c3" width="300" height="110"></canvas>
+  <div class="outputs">
+    <div class="out-col"><div class="out-bubble" id="b3and">0</div><span class="out-lbl">A·B</span></div>
+    <div class="out-col"><div class="out-bubble" id="b3q">0</div><span class="out-lbl">Q</span></div>
+  </div>
+</div>
+<table>
+  <thead><tr><th>A</th><th>B</th><th>C</th><th>A·B</th><th>Q</th></tr></thead>
+  <tbody id="tb3">
+    <tr data-a="0" data-b="0" data-c="0"><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+    <tr data-a="0" data-b="0" data-c="1"><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+    <tr data-a="0" data-b="1" data-c="0"><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+    <tr data-a="0" data-b="1" data-c="1"><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+    <tr data-a="1" data-b="0" data-c="0"><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+    <tr data-a="1" data-b="0" data-c="1"><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+    <tr data-a="1" data-b="1" data-c="0"><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td></tr>
+    <tr data-a="1" data-b="1" data-c="1"><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+  </tbody>
+</table>
+
+<hr>
+
+<div class="step-tag">Step 4 — the key insight</div>
+<h2>XOR + AND = half adder</h2>
+<p class="desc">Two inputs, two gates in parallel, two outputs. XOR gives the Sum bit. AND gives the Carry bit.</p>
+<div class="insight"><strong>Why two outputs?</strong> Adding 1+1 in binary gives 10 — two digits. Sum is the right digit, Carry is the left. Try it: set both A and B to 1. Sum=0, Carry=1 — that's binary 10, which equals decimal 2.</div>
+<div class="gate">
+  <div class="inputs">
+    <div class="irow"><span>A</span><input type="checkbox" id="n4A"></div>
+    <div class="irow"><span>B</span><input type="checkbox" id="n4B"></div>
+  </div>
+  <canvas id="c4" width="300" height="110"></canvas>
+  <div class="outputs">
+    <div class="out-col"><div class="out-bubble" id="b4sum">0</div><span class="out-lbl">Sum</span></div>
+    <div class="out-col"><div class="out-bubble" id="b4carry">0</div><span class="out-lbl">Carry</span></div>
+  </div>
+</div>
+<table>
+  <thead><tr><th>A</th><th>B</th><th>Sum (XOR)</th><th>Carry (AND)</th><th>Decimal</th></tr></thead>
+  <tbody id="tb4">
+    <tr data-a="0" data-b="0"><td>0</td><td>0</td><td>0</td><td>0</td><td>0+0 = 0</td></tr>
+    <tr data-a="0" data-b="1"><td>0</td><td>1</td><td>1</td><td>0</td><td>0+1 = 1</td></tr>
+    <tr data-a="1" data-b="0"><td>1</td><td>0</td><td>1</td><td>0</td><td>1+0 = 1</td></tr>
+    <tr data-a="1" data-b="1"><td>1</td><td>1</td><td>0</td><td>1</td><td>1+1 = 2</td></tr>
+  </tbody>
+</table>
+
+<a href="05_full_adder.html">Next lesson: full adder</a>
+
+<script>
+const WIRE_OFF='#4a6480', WIRE_ON='#00ff99', GATE_COL='#00d4ff', GATE2_COL='#a78bfa', TXT='#c9d8e8';
+
+function wc(on){return on?WIRE_ON:WIRE_OFF;}
+
+function bCtx(id){
+  const cv=document.getElementById(id);
+  const ctx=cv.getContext('2d');
+  ctx.clearRect(0,0,cv.width,cv.height);
+  return ctx;
+}
+function wire(ctx,x1,y1,x2,y2,on){
+  ctx.strokeStyle=wc(on);ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+}
+function wirePath(ctx,pts,on){
+  ctx.strokeStyle=wc(on);ctx.lineWidth=2;ctx.beginPath();
+  ctx.moveTo(pts[0][0],pts[0][1]);
+  for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i][0],pts[i][1]);
+  ctx.stroke();
+}
+function dot(ctx,x,y,on){
+  ctx.beginPath();ctx.arc(x,y,3.5,0,Math.PI*2);ctx.fillStyle=wc(on);ctx.fill();
+}
+function lbl(ctx,text,x,y,col){
+  ctx.fillStyle=col||TXT;ctx.font='10px monospace';ctx.textAlign='center';ctx.fillText(text,x,y);
+}
+function andBody(ctx,x,y,w,h,col){
+  ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.beginPath();
+  ctx.moveTo(x,y);ctx.lineTo(x,y+h);ctx.lineTo(x+w*.55,y+h);
+  ctx.bezierCurveTo(x+w*1.08,y+h,x+w*1.08,y,x+w*.55,y);
+  ctx.lineTo(x,y);ctx.stroke();
+}
+function orBody(ctx,x,y,w,h,col){
+  ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.beginPath();
+  ctx.moveTo(x,y);ctx.bezierCurveTo(x+w*.28,y,x+w*.28,y+h,x,y+h);
+  ctx.moveTo(x,y);ctx.bezierCurveTo(x+w*.32,y,x+w+10,y+h*.25,x+w+10,y+h*.5);
+  ctx.moveTo(x+w+10,y+h*.5);ctx.bezierCurveTo(x+w+10,y+h*.75,x+w*.32,y+h,x,y+h);
+  ctx.stroke();
+}
+function xorBody(ctx,x,y,w,h,col){
+  ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.beginPath();
+  ctx.moveTo(x-10,y);ctx.bezierCurveTo(x+w*.18,y,x+w*.18,y+h,x-10,y+h);ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x,y);ctx.bezierCurveTo(x+w*.32,y,x+w*.32,y+h,x,y+h);
+  ctx.moveTo(x,y);ctx.bezierCurveTo(x+w*.32,y,x+w+10,y+h*.25,x+w+10,y+h*.5);
+  ctx.moveTo(x+w+10,y+h*.5);ctx.bezierCurveTo(x+w+10,y+h*.75,x+w*.32,y+h,x,y+h);
+  ctx.stroke();
+}
+function notBubble(ctx,cx,cy,r,col){
+  ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke();
+}
+function notTri(ctx,x,y,col){
+  ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.beginPath();
+  ctx.moveTo(x,y-18);ctx.lineTo(x,y+18);ctx.lineTo(x+28,y);ctx.lineTo(x,y-18);ctx.stroke();
+}
+
+function drawStep1(a,b){
+  const ctx=bCtx('c1');
+  const andR=a&b, q=andR?0:1;
+  wire(ctx,0,25,50,25,a);wire(ctx,0,55,50,55,b);
+  lbl(ctx,'A',10,21);lbl(ctx,'B',10,51);
+  andBody(ctx,50,10,56,54,GATE_COL);
+  lbl(ctx,'AND',80,42,GATE_COL);
+  wire(ctx,106,37,158,37,andR);
+  lbl(ctx,''+andR,132,33,TXT);
+  notTri(ctx,158,37,GATE_COL);
+  notBubble(ctx,194,37,7,GATE_COL);
+  lbl(ctx,'NOT',173,52,GATE_COL);
+  wire(ctx,201,37,300,37,q);
+  lbl(ctx,'Q',285,33,TXT);
+  return{andR,q};
+}
+function drawStep2(a,b){
+  const ctx=bCtx('c2');
+  const orR=a|b, q=orR?0:1;
+  wire(ctx,0,25,50,25,a);wire(ctx,0,55,50,55,b);
+  lbl(ctx,'A',10,21);lbl(ctx,'B',10,51);
+  orBody(ctx,50,10,54,54,GATE_COL);
+  lbl(ctx,'OR',83,42,GATE_COL);
+  wire(ctx,114,37,158,37,orR);
+  lbl(ctx,''+orR,136,33,TXT);
+  notTri(ctx,158,37,GATE_COL);
+  notBubble(ctx,194,37,7,GATE_COL);
+  lbl(ctx,'NOT',173,52,GATE_COL);
+  wire(ctx,201,37,300,37,q);
+  lbl(ctx,'Q',285,33,TXT);
+  return{orR,q};
+}
+function drawStep3(a,b,c){
+  const ctx=bCtx('c3');
+  const andR=a&b, q=andR|c;
+  wire(ctx,0,20,46,20,a);wire(ctx,0,44,46,44,b);
+  lbl(ctx,'A',8,16);lbl(ctx,'B',8,40);lbl(ctx,'C',8,80);
+  andBody(ctx,46,6,52,52,GATE_COL);
+  lbl(ctx,'AND',74,38,GATE_COL);
+  wire(ctx,98,32,136,32,andR);
+  dot(ctx,136,32,andR);
+  wirePath(ctx,[[136,32],[136,60],[150,60]],andR);
+  wire(ctx,0,78,150,78,c);
+  wirePath(ctx,[[150,60],[150,70]],andR);
+  orBody(ctx,150,48,50,44,GATE2_COL);
+  lbl(ctx,'OR',178,74,GATE2_COL);
+  wire(ctx,210,70,300,70,q);
+  lbl(ctx,'Q',285,66,TXT);
+  return{andR,q};
+}
+function drawStep4(a,b){
+  const ctx=bCtx('c4');
+  const sum=a^b, carry=a&b;
+  wire(ctx,0,28,46,28,a);wire(ctx,0,52,46,52,b);
+  lbl(ctx,'A',8,24);lbl(ctx,'B',8,48);
+  dot(ctx,46,28,a);dot(ctx,46,52,b);
+  xorBody(ctx,46,12,54,56,GATE_COL);
+  lbl(ctx,'XOR',78,46,GATE_COL);
+  wire(ctx,110,40,300,40,sum);
+  lbl(ctx,'Sum',275,36,TXT);
+  wirePath(ctx,[[46,28],[46,82],[60,82]],a);
+  wirePath(ctx,[[46,52],[46,82]],a&&b?1:0);
+  andBody(ctx,60,66,52,40,GATE2_COL);
+  lbl(ctx,'AND',88,90,GATE2_COL);
+  wire(ctx,112,86,300,86,carry);
+  lbl(ctx,'Carry',275,82,TXT);
+  return{sum,carry};
+}
+
+function setBubble(id,val){
+  const el=document.getElementById(id);
+  el.textContent=val;el.classList.toggle('on',val===1);
+}
+function highlight(tbId,vals){
+  document.querySelectorAll('#'+tbId+' tr').forEach(tr=>{
+    const m=Object.entries(vals).every(([k,v])=>tr.dataset[k]===String(v));
+    tr.classList.toggle('active',m);
+  });
+}
+
+function upd1(){const a=+document.getElementById('n1A').checked,b=+document.getElementById('n1B').checked;const{andR,q}=drawStep1(a,b);setBubble('b1and',andR);setBubble('b1q',q);highlight('tb1',{a,b});}
+function upd2(){const a=+document.getElementById('n2A').checked,b=+document.getElementById('n2B').checked;const{orR,q}=drawStep2(a,b);setBubble('b2or',orR);setBubble('b2q',q);highlight('tb2',{a,b});}
+function upd3(){const a=+document.getElementById('n3A').checked,b=+document.getElementById('n3B').checked,c=+document.getElementById('n3C').checked;const{andR,q}=drawStep3(a,b,c);setBubble('b3and',andR);setBubble('b3q',q);highlight('tb3',{a,b,c});}
+function upd4(){const a=+document.getElementById('n4A').checked,b=+document.getElementById('n4B').checked;const{sum,carry}=drawStep4(a,b);setBubble('b4sum',sum);setBubble('b4carry',carry);highlight('tb4',{a,b});}
+
+['n1A','n1B'].forEach(id=>document.getElementById(id).onchange=upd1);
+['n2A','n2B'].forEach(id=>document.getElementById(id).onchange=upd2);
+['n3A','n3B','n3C'].forEach(id=>document.getElementById(id).onchange=upd3);
+['n4A','n4B'].forEach(id=>document.getElementById(id).onchange=upd4);
+upd1();upd2();upd3();upd4();
+</script>

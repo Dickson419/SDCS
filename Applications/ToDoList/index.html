@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 
+    Build a simple to-do list app where the user can:
+    1. Enter a task into an input field
+    2. Click a button to add it to the list
+    3. See each task displayed as a separate <div> or <li>
+    4. Click a "Remove" button on each task to delete it 
+    -->
+
+    <title>To Do List</title>
+    <style>
+
+        h1 {
+        text-align: center;
+        }
+
+        a{
+        
+            font-size: 2rem;
+            text-decoration: none;
+            color: #000000;
+            font-weight: 500;
+            transition: all 0.3s ease; /* Makes the hover effect smooth */
+            margin-top: 20%;
+
+        }
+
+        .container {
+            border-style: groove;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+        }
+
+        .enter-tasks {
+            border-style: groove;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        
+        }
+
+        .enter-tasks button{
+            width: 25%;
+            padding: 2px;
+            margin: 5px;
+        }
+            
+
+        #add-item-to-list{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            margin: 10px;    
+            padding: 10px;
+            align-items: center;
+            justify-content: center;
+
+        }    
+
+        /* tasks to complete section - sub class for holding tasks in this grid... */
+        .display-tasks {
+            border-style: groove;
+            display: flex;
+            flex-direction: column;
+            gap:10px;
+            padding: 10px;
+            
+        }
+
+    </style>
+
+
+</head>
+
+<body>
+    <h1>My To Do List</h1>
+
+    <div class="container">
+
+        <div class="enter-tasks">
+            <h1>Enter Tasks</h1>
+
+            <div id="add-item-to-list">
+            <form id="add-item-form">
+                <!-- for connects the label to an input vid its ID -->
+                <label for="Task">Task</label> 
+                <input type="text" id="Task" name="Task" placeholder="Task to complete">
+
+                <label for="Time">Time Allocated</label> 
+                <input type="text" id="Time" name="time-allocated" placeholder="How many hours?">
+
+                <label for="Due">Date Due</label> 
+                <input type="date" id="Due" name="due-by">
+
+
+            </form>
+            
+            </div>
+
+            <button id="submit-btn">Submit</button>
+            <button id="clear-btn">Clear Form</button>
+
+
+        </div>
+
+        <div class="display-tasks">
+            <h1>Tasks to Complete</h1>
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+   <script>
+let allTasks = []
+
+// object constructor for a task
+function Task(task,time,date){
+    this.task = task;
+    this.time = time;
+    this.date = date;
+}
+
+function addTaskToList(task,time,date){
+    let newTask = new Task(task,time,date);
+    allTasks.push(newTask);
+    displayTasks();
+    
+}
+
+function getUserResponse(){
+    // get the form data by using the element IDs
+    let task = document.getElementById("Task").value;
+    let time = document.getElementById("Time").value;
+    let date = document.getElementById("Due").value;
+
+    addTaskToList(task,time,date);
+
+    
+}
+
+/*
+1. choose a parent container
+2. clear the container before adding anything new
+3. loop through all tasks
+4. append each new task
+
+*/
+
+function displayTasks(){
+    // 1 - use a parent container
+    const tasks = document.querySelector(".display-tasks");
+
+    //2. clear the container 
+    tasks.innerHTML = "";
+
+    //3. loop over all tasks
+    let index = 0;
+    allTasks.forEach((taskObj, index) =>{
+        const taskDiv = document.createElement("div");
+        taskDiv.className = "task-card"; //this is for styling
+
+        //populate the div
+        taskDiv.innerHTML = `
+        <p>Task: ${taskObj.task}</p>
+        <p>Time Allocated: ${taskObj.time}</p>
+        <p>Due on: ${taskObj.date}</p>
+        
+        `;
+
+        // append to the parent container
+        tasks.appendChild(taskDiv);
+
+    });
+    
+
+
+}
+
+
+
+// ----- the form -----
+// use an eventListener to get user input and add it to the array
+
+const submitButton = document.querySelector("#submit-btn");
+submitButton.addEventListener("click", getUserResponse);
+
+
+   </script>
+
+   <a href="/index.html">Home</a>
+</body>
+
+</html>

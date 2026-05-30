@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="canvasScript.js" defer ></script>
+    <script src="script.js" defer></script>
+
+</head>
+<body>
+    <h1>Logic Gates</h1>
+    <p>Toggle the inputs on the left, the inputs, and see
+    <br>what changes with the outputs. 
+    <br><br>Do you see a link between the A and B inputs and the Q output?
+    <br><br>Do you understand the <i style="color: aquamarine;">truth table</i> below each gate?
+    </p>
+    <br>
+
+    <h2>AND Gate</h2>
+    <div class="gate" id="andForm">
+        <div class="inputs">
+            <label>A<input type="checkbox" name="andA" id="andA"></label>
+            <label>B<input type="checkbox" name="andB" id="andB"></label>
+        </div>
+        <canvas id="andGate" width="160px" height="80px"></canvas>
+        <label><input type="checkbox" name="outAND" id="outAND">C</label>
+    </div>
+
+    <div class="logic-table">
+        <table>
+            <thead>
+            <tr>
+                <th>Input A</th>
+                <th>Input B</th>
+                <th>Output Q</th>
+            </tr>
+            </thead>
+            
+            <tbody id="andTruth">
+                <tr>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+            </tbody>
+            
+        </table>
+    </div>
+   
+    <br><br>
+    <h2>OR Gate</h2>
+    <div class="gate" id="andForm">
+        <div class="inputs">
+             <label>A<input type="checkbox" name="orA" id="orA"></label>
+             <label>B<input type="checkbox" name="orB" id="orB"></label>
+        </div>
+        <canvas id="orGate" width="160px" height="80px"></canvas>
+        <label><input type="checkbox" name="outOR" id="outOR">Q</label>
+    </div>
+
+    <div class="logic-table">
+        <table>
+            <thead>
+            <tr>
+                <th>Input A</th>
+                <th>Input B</th>
+                <th>Output Q</th>
+            </tr>
+            </thead>
+            
+            <tbody id="orTruth">
+                <tr>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+            </tbody>
+            
+        </table>
+    </div>
+    
+    <br><br>
+    <h2>NOT Gate</h2>
+    <div class="gate" id="andForm">
+        <div class="inputs">
+             <label>A<input type="checkbox" name="notA" id="notA"></label>
+        </div>
+        <canvas id="notGate" width="160px" height="80px"></canvas>
+         <label><input type="checkbox" name="outNOT" id="outNOT">Q</label>
+    </div>
+
+    <div class="logic-table">
+        <table>
+            <thead>
+            <tr>
+                <th>Input A</th>
+                
+                <th>Output Q</th>
+            </tr>
+            </thead>
+            <tbody id="notTruth">
+                <tr>
+                    <td>0</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>0</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>  
+
+    <br>
+    <br>
+    <div>
+        <a href="01_practical_examples.html">Click for the next <em>lesson</em></a>
+    </div>
+    
+    
+</body>
+</html>
