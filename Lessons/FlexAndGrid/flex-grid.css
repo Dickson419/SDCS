@@ -8,6 +8,20 @@ h1 {
     font-size: 3rem;
 }
 
+h2{
+    color: #ffffff;
+    text-align: left;
+    font-size: 2rem;
+
+}
+
+ul{
+    color: #ffffff;
+    font-size: 14pt;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+}
+
 p{
     color: #ffffff;
     font-size: 2rem;
