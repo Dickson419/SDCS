@@ -1,5 +1,40 @@
+/* use of variabls for the colour scheme */
+:root {
+    --bg:        #161e36;
+    --surface:   #111827;
+    --surface2:  #1a2236;
+    --border:    rgba(99,179,237,0.12);
+    --border2:   rgba(99,179,237,0.25);
+    --accent:    #38bdf8;
+    --accent2:   #818cf8;
+    --text:      #e2e8f0;
+    --muted:     #acbace;
+    --font-head: 'JetBrains Mono', monospace;
+    --font-body: 'Space Grotesk', sans-serif;
+}
+html { 
+    scroll-behavior: smooth; 
+} 
+
 body{
-    background-color:#28446e;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+/* pseudo class. It loads this BEOFRE the body element above */
+body::before{
+    content: ''; /* works as a layer for everything underneath to go on. Similar to making a div class all in the html  */
+    position:fixed;
+    inset:0;
+    background-image: 
+    /* linear-gradient merges colors along the x or y axis */
+        linear-gradient(rgba(56,189,248,0.1)1px, transparent 1px),
+        linear-gradient(90deg, rgba(56,189,248,0.1)1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
 }
 
 input{
@@ -15,6 +50,7 @@ canvas{
 .banner-container{
     width: 100%;
     min-height:20vh;
+    padding: 2rem 4rem;
 
     /* add the background image */
     background-image: url("images/binary-banner-bg.webp");
@@ -25,6 +61,9 @@ canvas{
     display: flex;
     align-items: center;
     justify-content: center;
+
+    /* background: linear-gradient(135deg, rgba(56,189,248,0.06) 0%, transparent 60%); */
+    overflow: hidden;
 
 }
 
@@ -49,17 +88,22 @@ canvas{
     
     gap: clamp(12%, 5vw, 60px);
     padding: 5px;
+
+    /* background: var(--surface); */
+    background: #111827;;
+    border-bottom: 2px solid var(--border);
 }
 .main-menu a{
-    font-size: 2rem;
+    font-size: 1.8rem;
     text-decoration: none;
-    color: #ffffff;
+    color: var(--muted);
     font-weight: 500;
     transition: all 0.3s ease; /* Makes the hover effect smooth */
+    padding-left: 5px;
     
 }
 .main-menu a:hover{
-    color: #7adff6;
+    color: var(--accent);
     text-shadow: 0 0 8px rgba(0,210,255,0.6);
 }
 
@@ -75,6 +119,14 @@ canvas{
     padding: 10px 0px;
     
     color: rgb(120, 223, 244);
+
+    top:100%;
+    left:0;
+    min-width: 200px;
+    /* background: var(--surface); */
+    border: 1px solid var(--border2);
+    border-top: 2px solid var(--accent);
+    padding: 0.6rem 0;
     
 }
 .dropdown-content a{
