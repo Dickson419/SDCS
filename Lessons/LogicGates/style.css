@@ -18,6 +18,12 @@ h2{
     margin-bottom: 8px;
 }
 
+/* menu cards */
+h3{
+    color: white;
+    text-align: center;
+}
+
 input[type="checkbox"]{
     appearance: none; /*create a blank slate */
     /* make our own checkbox style */
@@ -65,12 +71,43 @@ th {
 }
 
 a {
-      color: rgb(0, 255, 145);
-      font-size: 14pt;
-      text-decoration: none;
-      display: inline-block;
-      margin-top: 8px;
-      border: 1px solid #1e3a5f;
-      padding: 6px 16px;
-      background: #111827;
+    color: rgb(0, 255, 145);
+    font-size: 14pt;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 8px;
+    border: 1px solid #1e3a5f;
+    padding: 6px 16px;
+    background: #111827;
     }
+
+
+/* effects for the card on the logic and binary home page */
+.card-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr auto;
+    gap: 10px;
+    overflow:hidden;
+    padding: 4px;  
+    margin: 2rem;
+}
+.card{
+    border: 1px solid white ;
+    background: rgb(16, 93, 155);
+    color: white;
+    min-height: 6rem;
+    min-width: 12rem;
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 12px; 
+    transition: all 0.2s ease-out;
+}
+.card:hover{
+    transform: translateY(-3px);
+    box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
+    top: -4px;
+    border: 1px solid #222480;
+    background-color: rgb(74, 118, 231);
+    
+}
