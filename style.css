@@ -1,7 +1,7 @@
 /* use of variabls for the colour scheme */
 :root {
     --bg:        #161e36;
-    --surface:   #111827;
+    --surface:   #111827c3;
     --surface2:  #1a2236;
     --border:    rgba(99,179,237,0.12);
     --border2:   rgba(99,179,237,0.25);
@@ -40,16 +40,19 @@ body::before{
 input{
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 18pt;
+    z-index: 1;
     
 }
 
 canvas{
+    position: relative;
     background-color: #ffffff;
+    z-index: 1;
 }
 
 .banner-container{
     width: 100%;
-    min-height:20vh;
+    min-height:8vh;
     padding: 2rem 4rem;
 
     /* add the background image */
@@ -85,6 +88,7 @@ canvas{
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 4rem;
     
     gap: clamp(12%, 5vw, 60px);
     padding: 5px;
@@ -94,7 +98,7 @@ canvas{
     border-bottom: 2px solid var(--border);
 }
 .main-menu a{
-    font-size: 1.8rem;
+    font-size: 1.6rem; /* adjust the content in the drop down*/
     text-decoration: none;
     color: var(--muted);
     font-weight: 500;
@@ -109,6 +113,7 @@ canvas{
 
 .dropdown{
     position: relative;
+    z-index: 100;
 }
 .dropdown-content{
     display: none;
@@ -116,21 +121,37 @@ canvas{
     width: max-content;
     white-space: nowrap;
     font-size: 2rem;
-    padding: 10px 0px;
     
-    color: rgb(120, 223, 244);
+    /* color: rgb(120, 223, 244); */
 
     top:100%;
     left:0;
-    min-width: 200px;
-    /* background: var(--surface); */
-    border: 1px solid var(--border2);
+    min-width: 220px;
+    background: var(--surface);
+    /* border: 1px solid var(--border2); */
     border-top: 2px solid var(--accent);
-    padding: 0.6rem 0;
+    padding: 0.8rem;
     
 }
-.dropdown-content a{
+.dropdown > a{
+    display: block; /* whole area can be clicked */
+    font-family: var(--font-head);
+    font-size: 1.7rem;  /* adjust the heading of the dropdown menu */
+    font-weight: 400;
+    text-decoration: none;
+    color: var(--muted);
+    padding: 1rem 1.4rem;
+    letter-spacing: 0.05em;
+    text-transform: none;
+    transition: color 0.2s, background 0.2s;
+    border-bottom: 2px solid transparent;
+
+}
+.dropdown-content a:hover{
     font-size: 20pt;
+    color: var(--accent);
+    padding-left: 1.4rem; /* move the highlighted link right*/
+    
 }
 .dropdown:hover .dropdown-content {
   display: block;
@@ -141,15 +162,12 @@ canvas{
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    margin-top: 10%;
-    
-    
+    margin-top: 10%;  
+    z-index: 3;
 }
 .canvas-btns{
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 10px;
-    
-
 }
