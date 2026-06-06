@@ -1,36 +1,62 @@
+:root {
+    --bg:        #312c2f;
+    --cardBg:   rgb(248, 67, 7);
+    --cardBgHov:   #ff5f2af8;
+    --text:      #feefdd;
+    --border: 3px solid #18121c;
+    --borderHov: 4px solid rgb(0, 0, 0);
+    --font-head: 'JetBrains Mono', monospace;
+    --font-body: 'Space Grotesk', sans-serif;
+}
+
 body{
-        background: #28446e;
+    background: var(--bg);
+    font-family: var(--font-body);
     }
 
 h1 {
-    color: #ffffff;
+    color: var(--text);
     text-align: center;
     font-size: 3rem;
+    font-family: var(--font-head);
 }
 
 h2{
-    color: #ffffff;
+    color: var(--text);
     text-align: left;
     font-size: 2rem;
+    font-family: var(--font-head);
 
 }
 
 ul{
-    color: #ffffff;
+    color: var(--text);
     font-size: 14pt;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: var(--font-body);
 
 }
 
 p{
-    color: #ffffff;
+    color: var(--text);
     font-size: 2rem;
 }
 
-a {
+
+a{
+    color: rgb(0, 0, 0);
     font-size: 2rem;
     text-decoration: none;
-    color: #ffffff;
-    font-weight: 500;
-    transition: all 0.3s ease; /* Makes the hover effect smooth */
+    display: inline-block;
+    margin-top: 14%;
+    border: var(--border);
+    padding: 6px 16px;
+    background: #feefdd;
+    border-radius: 4%;
+}
+a :hover{
+    background: #e76c1a;
+    border: var(-- --borderHov);
+    transform: translateY(-1px);
+    box-shadow: 0px 4px 2px rgba(0, 0, 0, 0.2);
+
 }
