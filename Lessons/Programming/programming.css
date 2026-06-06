@@ -1,0 +1,113 @@
+/*
+:root {
+    --bg:        #050505;
+    --cardBg:    #111111;
+    --cardBgHov: #1a1a1a;
+    --text:      #00ff88;
+    --border:    2px solid #00ff88;
+    --borderHov: 3px solid #00ffaa;
+
+    --font-head: 'JetBrains Mono', monospace;
+    --font-body: 'JetBrains Mono', monospace;
+}
+    */
+:root {
+    --bg:        #08010f;
+    --cardBg:    #12091f;
+    --cardBgHov: #1f1033;
+
+    --text:      #f5f5f5;
+    --textAccent:#00f7ff;
+
+    --border:    2px solid #ff00ff;
+    --borderHov: 2px solid #00f7ff;
+
+    --accent1:   #ff00ff; /* Neon Pink */
+    --accent2:   #00f7ff; /* Neon Cyan */
+    --accent3:   #8a2be2; /* Electric Purple */
+
+    --font-head: 'JetBrains Mono', monospace;
+    --font-body: 'Space Grotesk', sans-serif;
+}
+
+body{
+    background: var(--bg);
+    font-family: var(--font-body);
+    }
+
+h1 {
+    color: var(--text);
+    text-align: center;
+    font-size: 3rem;
+    font-family: var(--font-head);
+}
+
+h2{
+    color: var(--text);
+    text-align: left;
+    font-size: 2rem;
+    font-family: var(--font-head);
+
+}
+
+ul{
+    color: var(--text);
+    font-size: 14pt;
+    font-family: var(--font-body);
+
+}
+
+p{
+    color: var(--text);
+    font-size: 2rem;
+}
+
+
+a{
+    color: rgb(0, 0, 0);
+    font-size: 2rem;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 14%;
+    border: var(--border);
+    padding: 6px 16px;
+    background: #feefdd;
+    border-radius: 4%;
+}
+
+
+/* effects for the card on the logic and binary home page */
+.card-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr auto;
+    gap: 10px;
+    overflow:hidden;
+    padding: 4px;  
+    margin: 2rem;
+}
+.card{
+    border: var(--border) ;
+    background: var(--cardBg);
+    color: white;
+    min-height: 6rem;
+    min-width: 12rem;
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 12px; 
+    transition: all 0.1s ease-out;
+}
+.card:hover{
+    transform: translateY(-2px);
+    box-shadow: 0px 14px 2px rgba(0, 0, 0, 0.2);
+    top: -2px;
+    border: var(--borderHov);
+    background-color: var(--cardBgHov);
+    
+}
+
+.home-btn {
+    display: inline-block;
+    padding: 12px 24px;
+
+}
