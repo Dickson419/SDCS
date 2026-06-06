@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+
+    <style>
+        body{
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        div{
+            margin: 5px;
+            padding: 5px;
+        }
+
+        #forLoop-imgContainer{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+
+        }   
+
+        #forLoop-imgContainer img{
+            width: 240px;
+            height: 340px;
+            margin: 10px;
+            border-radius: 8px;
+        }
+    </style>
+    
+
+
+</head>
+<body>  
+
+    <div class="heading">
+        <h1>Book Recomendations</h1>
+        <h2>Making a slideshow</h2>
+        <p>This looks more like it!</p>
+        <p>Copy the JS code and add in comments - how does it all work? Can you piece it together?</p>
+    </div>
+
+    <div id="forLoop-imgContainer">
+        
+    </div>
+
+    <div class="footer">
+        <p>Do you see anything odd? Right, all books are displayed at once... </p>
+        <a href="">Next Step</a>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+
+        function showImage(index){
+            //understanding 'display' is the key here
+            imgElements.forEach(img => img.style.display = 'none');
+            imgElements[index].style.display = 'block';
+        }
+
+        const images = [
+            '/../Images/books/children_of_time.jpg',
+            '/../Images/books/do_androids_dream.jpg',
+            '/../Images/books/get_coding1.png',
+            '/../Images/books/get_coding2.png',
+            '/../Images/books/grokking-algorithms.jpg',
+            '/../Images/books/grokking-data-structures.jpg',
+            '/../Images/books/hello_world.jpg',
+            '/../Images/books/manga1.jpg',
+            '/../Images/books/manga2.jpg',
+            '/../Images/books/manga3.jpg',
+            '/../Images/books/surveilance_capitalism.jpg',
+            '/../Images/books/weapons_of_mathdestruction.jpg',
+            '/../Images/books/you_look_like.jpg',
+        ];
+
+        const container = document.getElementById('forLoop-imgContainer');
+
+        // create empty images array
+        const imgElements = [];
+
+        for (let i = 0; i < images.length; i++) {
+            const img = document.createElement('img');
+            img.src = images[i];
+            container.appendChild(img);
+
+            imgElements.push(img);
+        }
+
+        showImage(currentIndex);
+
+        setInterval( () => {
+            currentIndex++;
+            if(currentIndex >= imgElements.length) {
+                currenIndex = 0;
+            }
+            showImage(currentIndex);
+
+        }, 3000);
+
+
+    </script>
+
+</body>
+</html>
