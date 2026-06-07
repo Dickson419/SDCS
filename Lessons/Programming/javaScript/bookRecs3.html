@@ -14,6 +14,11 @@
             font-size: 1rem;
         }
 
+        div{
+            margin: 5px;
+            padding: 5px;
+        }
+
         a{
             text-decoration: none;
             color: rgb(0, 0, 0);
@@ -24,9 +29,23 @@
         }
 
 
-        div{
-            margin: 5px;
+        button{
             padding: 5px;
+            margin: 5px;
+            width: 4rem;
+            height: 2.2rem;
+        }
+
+        .gallery{
+            display: flex;
+            flex-direction: column-reverse;
+
+        }
+        #controls{
+            width: 12%;
+            display: flex;
+            justify-content: space-between;
+            gap: 25%;
         }
 
         #forLoop-imgContainer{
@@ -51,22 +70,58 @@
 
     <div class="heading">
         <h1>Book Recomendations</h1>
-        <h2>Making a slideshow</h2>
-        <p>This looks more like it!</p>
-        <p>Copy the JS code and add in comments - how does it all work? Can you piece it together?</p>
+        <h2>Making Additons to the Slideshow</h2>
+        <p>OK, array and for loop are working with the help of the JS built in function of setInterval().</p>
+        <p>If on the previous page you said "Add a forward and back button" this is what has been done here</p>
+
+        <h2>TASK - <b style="color: red;">Before</b> Inspecting the Code</h2>
+        <ul>
+            <li>What HTML elements will you need?</li>
+            <li>What CSS might be useful?</li>
+            <li>What do we need the JS to do?</li>
+        </ul>
+
+        <ol>
+            <li>Can you try modifying your previous code first? THEN look at this page's code...</li>
+            <li>Now... understand how this code works! Copy it, run it and comment it!</li>
+        </ol>
+        
+
     </div>
 
-    <div id="forLoop-imgContainer">
+    <div class="gallery" id="forLoop-imgContainer">
+
+        <div id="controls">
+            <button type="button" id="back" onclick="skip(-1)">Back</button>
+            <button type="button" id="forward" onclick="skip(1)">Forward</button>
+            
+        </div>
         
     </div>
 
     <div class="footer">
-        <p>What additonal features might be useful to add next? Think before you click the link! </p>
-        <a href="bookRecs3.html">Next Step</a>
+        <a href="../progHome.html">Array complete!</a>
     </div>
 
+
     <script>
+        let forward = document.getElementById("forward");
+        let backward = document.getElementById("back");
         let currentIndex = 0;
+
+        function skip(direction){
+            currentIndex += direction;
+
+            if(currentIndex >= imgElements.length){
+                currentIndex = 0;
+            }
+            if(currentIndex < 0){
+                currentIndex = imgElements.length -1;
+            }
+
+            showImage(currentIndex);
+            
+        };
 
         function showImage(index){
             //understanding 'display' is the key here
@@ -105,6 +160,7 @@
         }
 
         showImage(currentIndex);
+    
 
         setInterval( () => {
             currentIndex++;
