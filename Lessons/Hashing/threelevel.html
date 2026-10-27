@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <!-- Link to external CSS file -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Link to external JavaScript file -->
+  <script>
+
+  let qwerty = "rtfouryu"; //2, 6
+  let = asdfd = "vbelenhgfds"; //3,5
+  let zxcvb = "pokjsqvelsfghte" // 6,9
+  function verify(){
+
+    password = document.getElementById('password').value;
+    if(hash(password.toUpperCase()) == 2552308){
+      window.location.href= qwerty.substring(2,6) + asdfd.substring(3,5) + zxcvb.substring(6,9) + ".html";
+    }
+    else{
+      document.getElementById('message').className = 'error';
+      document.getElementById('message').innerHTML = 'WRONG PASSWORD! Try again'
+    }
+  }
+
+  function hash(pword){
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const primes = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101];
+    let total = 1; //initialsed as 1. This will work out the final hash value
+
+    //loop through each character of the input password
+    for(let x=0; x<pword.length; x++){
+      //check each character at position X. Convert to uppercase.
+      //indexOf - maps each letter X index value to that in the alphabet i.e A = 0 = 2, B = 1 = 3
+      let position = alphabet.indexOf(pword.charAt(x).toUpperCase());
+      total *= primes[position];
+    }
+    //however, it has no regard for order
+    return total;
+  }
+
+
+
+
+  </script>
+
+    <title>Encryption</title>
+  </head>
+
+
+  <body>
+    <div class="login">
+      <h1>Level Three</h1>
+
+      <p>This is a much stronger hash. This time we assign each letter in the alphabet to a prime number.
+      When that letter is used we multiply the total by that number. This eliminates many possibilities for the
+    'wrong' password being a match for the hash value. But, there are still weaknesses... </p>
+
+      <h2 id="message"></h2>
+      <input type="text" id="password" autocomplete="off">
+      <button type="button" onclick="verify();">Login</button>
+
+    </div>
+
+
+
+
+
+
+
+  </body>
+</html>

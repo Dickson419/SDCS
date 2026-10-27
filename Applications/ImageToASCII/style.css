@@ -1,0 +1,89 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    color: #2872a1;
+    background-color:#cbdde9;
+    padding: 10px;
+}
+
+h1{
+    text-align: center;
+    margin-bottom: 10%;
+}
+
+input{
+    width: 300px
+}
+
+a {
+    font-size: 2rem;
+    text-decoration: none;
+    color: #000000;
+    font-weight: 500;
+    transition: all 0.3s ease; /* Makes the hover effect smooth */
+    margin-top: 20%;
+}
+
+.box{
+    width: 250px;
+    height: 250px;
+    border: 2px solid #333;
+    margin: 5px;
+}
+
+.colourBoxes{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10%;
+    margin: 5%;
+}
+.colourItem{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+}
+
+.controls{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 35%;
+    margin: auto;
+}
+
+/* select all div elements that are direct children of .controls */
+.controls > div{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+/* first span tag that is a direct child of .controls */
+.controls > div span:first-child {
+    width: 50px; /* adjust to fit longest label */
+    text-align: right;
+}
+.controls > div input[type="range"] {
+    flex: 1;      /* fill remaining space */
+    min-width: 0; /* prevent overflow */
+}
+
+.asciiCanvas{
+    background-color: #333;
+    display: inline-block;
+    margin: auto;
+    width:auto;
+    height:auto;
+}
+
+#asciiChar {
+  font-family: monospace;
+  font-size: 40px;
+}
+#asciiOutput {
+  font-family: monospace;
+  font-size: 8px;
+  line-height: 8px;
+  white-space: pre;
+}

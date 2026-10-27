@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDCS</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+
+</head>
+<body>
+    <header class="banner-container">
+        <h1 class="banner-title">SD Computer Science</h1>
+    </header>
+
+    <nav class="main-menu">
+        <div class="dropdown">
+                <a href="">Home</a>
+                <div class="dropdown-content">
+                    test
+                </div>
+        </div>
+
+        <div class="dropdown">
+                <a href="">Lessons</a>
+                <div class="dropdown"></div>
+                <div class="dropdown-content">
+                    <a href="Lessons/WebDesign/webdesHome.html">Web Design</a><br>
+                    <a href="Lessons/LogicGates/logic_home.html">Logic Gates</a><br>
+                    <a href="Lessons/Hashing/index.html">Encryption</a><br>
+                    <a href="Lessons/Programming/progHome.html">Programming</a><br>
+                </div>
+        </div>
+
+        <div class="dropdown">
+                <a href="">Applications</a>
+                <div class="dropdown-content">
+                    <a href="Applications/Calculator/simpleCalculator.html">Calculator</a><br>
+                    <a href="Applications/ImageToASCII/index.html">Image to ASCII</a><br>
+                    <a href="Applications/ToDoList/index.html">To Do List</a><br>
+                </div>
+        </div>
+
+        <div class="dropdown">
+                <a href="">About</a>
+                <div class="dropdown-content">
+                    <a href="About/resources.html">Resources</a><br>
+                    <a href="http://">Contact</a>
+                </div>
+        </div>
+            
+        
+    </nav>
+    <br>
+    <br>
+    <div class="canvas-drawing">
+        <canvas id="home-canvas" width="400" height="200" style="border: 2px solid black;"></canvas>
+        <div class="canvas-btns">
+            <input type="button" id="add-btn" value="Add">
+            <input type="button" id="clear-btn" value="Clear">
+        </div>
+        <input type="text" id="user-text" placeholder="Enter Text">
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+
+  <link rel="stylesheet" href="style.css">
+
+  <script>
+  function verify(){
+    let qwerty = "rtfouryu"; //2, 6
+    let = asdfd = "vbelenhgfds"; //2,5
+    let zxcvb = "pokjsqvelsfghte" // 6,9
+
+    password = document.getElementById('password').value;
+    if(hash(password.toUpperCase()) == 2552308){
+      window.location.href= qwerty.substring(2,6) + asdfd.substring(2,5) + zxcvb.substring(6,9) + ".html";
+    }
+    else{
+      document.getElementById('message').className = 'error';
+      document.getElementById('message').innerHTML = 'WRONG PASSWORD! Try again'
+    }
+  }
+
+  function hash(pword){
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const primes = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101];
+    let total = 1;
+    let prev = 0;
+
+    for(let x=0; x<pword.length; x++){
+      let position = alphabet.indexOf(pword.charAt(x).toUpperCase());
+      total *= primes[position] + prev;
+      prev = total % 207;
+    }
+
+    return total;
+  }
+
+
+
+
+  </script>
+
+    <title>Encryption</title>
+  </head>
+
+
+  <body>
+  <div class="login">
+    <h1>Level Four</h1>
+    <p>A disadvantage of the prime number hash is that if you know which primes
+    are associated with each letter you can quite eaisly work out which word was used.
+    The order of the letters is unimportant: CAT, TAC, ACT etc. This level works in a similar way...
+    However, it adds on the pervious result (MOD 207) which seeks to eliminate this problem.
+ </p>
+
+    <h2 id="message"></h2>
+    <input type="text" id="password" autocomplete="off">
+    <button type="button" onclick="verify();">Login</button>
+
+  </div>
+
+
+
+
+
+
+
+  </body>
+</html>
