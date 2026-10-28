@@ -1,26 +1,28 @@
 :root {
-        --bg:        #161e36;
-        --surface:   #111827;
-        --surface2:  #1a2236;
-        --border:    rgba(99,179,237,0.12);
-        --border2:   rgba(99,179,237,0.25);
-        --accent:    #38bdf8;
-        --accent2:   #818cf8;
-        --text:      #e2e8f0;
-        --muted:     #64748b;
-        --font-head: 'JetBrains Mono', monospace;
-        --font-body: 'Space Grotesk', sans-serif;
-    }
- 
+            --bg:        #13212e;
+            --surface:   #00ffc6;
+            --surface2:  #00a8e8;
+            --border:    rgba(87, 139, 176, 0.2);
+            --border2:   rgba(107, 183, 237, 0.4);
+            --accent:    #38bdf8;
+            --accent2:    #818cf8;
+            --text:      #e8eddf;
+            --muted:     #64748b;
+            --font-head: 'JetBrains Mono', monospace;
+            --font-body: 'Space Grotesk', sans-serif;
+        }
+
 html { scroll-behavior: smooth; } 
- 
- 
+
 body {
     background-color: var(--bg);
     color: var(--text);
     font-family: var(--font-body);
     min-height: 100vh;
     overflow-x: hidden;
+    margin: 0;
+    padding: 20px;
+    position: relative;
 }
 
 /* for the grid effect */
@@ -29,144 +31,215 @@ body::before {
     position: fixed;
     inset: 0;
     background-image:
-        linear-gradient(rgba(56,189,248,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(56,189,248,0.04) 1px, transparent 1px);
+        linear-gradient(rgba(255, 255, 255, 0.05) 2px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255, 0.05) 2px, transparent 1px);
     background-size: 40px 40px;
     pointer-events: none;
     z-index: 0;
 }
 
-input{
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-size: 18pt;
-    
-}
-
-canvas{
-    background-color: #ffffff;
-}
-
-.banner-container{
-    width: 100%;
-    min-height:20vh;
-    padding: 2rem 4rem;
-
-    /* add the background image */
-    background-image: url("images/binary-banner-bg.webp");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: linear-gradient(135deg, rgba(56,189,248,0.06) 0%, transparent 60%);
-    overflow: hidden;
-
-}
-
-.banner-title{
-    color: #ffffff;            
-    font-family: 'Arial', sans-serif;
-    font-size: 3rem;              /* Large, bold text */
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    
-    /* Text shadow for extra readability against busy backgrounds */
-    text-shadow: 4px 2px 4px rgba(0, 0, 0, 0.577);
-    text-shadow: 0 0 8px #0d7e97,  /* Soft inner glow */
-                 0 0 5px #0008ff;  /* Broader outer glow */
-
-}
-
-.main-menu{
+header, nav {
     position: relative;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    gap: clamp(12%, 5vw, 60px);
-    padding: 5px;
-
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-}
-.main-menu a {
-    font-size: 0.85rem;         /* matches the redesign scale */
-    text-decoration: none;
-    color: var(--muted);
-    font-weight: 400;
-    transition: all 0.3s ease;
-    padding-left: 5px;
+    z-index: 10; /* Higher number keeps the menu on top */
 }
 
-.main-menu a:hover {
-    color: var(--accent);
-    text-shadow: 0 0 8px rgba(56,189,248,0.6);
-}
-
-.dropdown{
+.canvas-drawing {
     position: relative;
+    z-index: 1;  /* Lower number keeps the box underneath */
 }
-.dropdown-content{
-    display: none;
-    position:absolute;
-    width: max-content;
-    white-space: nowrap;
-    font-size: 2rem;
-    padding: 10px 0px;
-    
-    color: rgb(120, 223, 244);
 
-    top: 100%;
-    left: 0;
-    min-width: 200px;
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    border-top: 2px solid var(--accent);
-    padding: 0.5rem 0;
-    z-index: 200;
-    
+.banner-container {
+    text-align: center;
+    padding: 20px;
 }
-.dropdown > a {
-    display: block;
+
+.banner-title {
     font-family: var(--font-head);
-    font-size: 0.85rem;
-    font-weight: 400;
-    text-decoration: none;
-    color: var(--muted);
-    padding: 1rem 1.4rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    transition: color 0.2s, background 0.2s;
-    border-bottom: 2px solid transparent;
+    color: var(--surface);
+    font-size: 2.8rem;
+    text-shadow: 0 0 10px rgba(0, 255, 198, 0.3);
+    margin: 0;
 }
+
+/* Navigation & Dropdowns */
+.main-menu {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8vw; /* Adjusted gap so items fit better across screen sizes */
+    background: rgba(11, 19, 26, 0.8);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    backdrop-filter: blur(8px);
+    margin-bottom: 40px; /* Creates clean breathing room before the box below */
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown > a {
+    color: var(--text);
+    text-decoration: none;
+    font-family: var(--font-head);
+    font-size: 1.5rem;
+    padding: 8px 16px;
+    display: block;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.dropdown > a:hover {
+    color: var(--surface);
+    background: rgba(0, 255, 198, 0.1);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #070d12;
+    min-width: 220px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.4);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    z-index: 10;
+
+}
+
+.dropdown-content a {
+    color: var(--text);
+    padding: 10px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 1.1rem;
+    transition: background 0.2s;
+}
+
 .dropdown-content a:hover {
-    color: var(--accent);
-    background: rgba(56,189,248,0.06);
-    padding-left: 1.6rem;
+    background-color: rgba(0, 168, 232, 0.15);
+    color: var(--surface);
 }
 
 .dropdown:hover .dropdown-content {
     display: block;
 }
 
-
-
-.canvas-drawing{
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 10px;
-margin-top: 10%;
-    
-    
-}
-.canvas-btns{
+/* Canvas & Inputs */
+.canvas-drawing {
+    max-width: 500px;
+    margin: 40px auto; /* Clean centered spacing that won't collide with menus */
+    padding: 20px;
+    background: rgba(7, 13, 18, 0.6);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    gap: 15px;
     align-items: center;
+}
+
+canvas {
+    background-color: #ffffff;
+    border: 2px solid var(--surface2) !important;
+    border-radius: 6px;
+    box-shadow: 0 0 15px rgba(0, 168, 232, 0.2);
+}
+
+.canvas-btns {
+    display: flex;
     gap: 10px;
+    width: 100%;
+}
+
+input[type="button"] {
+    flex: 1;
+    background: var(--surface2);
+    color: #0b131a;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--font-head);
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+input[type="button"]:hover {
+    background: var(--surface);
+    box-shadow: 0 0 10px rgba(0, 255, 198, 0.4);
+}
+
+input[type="text"] {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 18pt;
+    width: 100%;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border2);
+    color: var(--text);
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--surface);
+    box-shadow: 0 0 8px rgba(0, 255, 198, 0.3);
+}
+
+
+/* MOBILE DEVICE COMPATABILITY */
+/* --- Mobile Responsive Styles --- */
+@media screen and (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .banner-title {
+        font-size: 2rem; /* Shrink title so it doesn't overflow */
+    }
+
+    .main-menu {
+        flex-direction: column; /* Stack navigation vertically on phones */
+        align-items: center;
+        gap: 5px;
+        padding: 10px;
+    }
+
+    .dropdown {
+        width: 100%;
+        text-align: center;
+    }
+
+    .dropdown > a {
+        font-size: 1.3rem;
+    }
+
+    .dropdown-content {
+        position: static; /* Let it flow inline on mobile instead of absolute hovering */
+        width: 100%;
+        box-shadow: none;
+        border: none;
+        background: rgba(7, 13, 18, 0.95);
+        margin-top: 0;
+        padding-top: 5px;
+    }
+
+    /* Keep dropdown hidden by default on mobile, show on hover or tap */
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .canvas-drawing {
+        max-width: 100%; /* Make canvas container fit smaller screens */
+        margin: 20px auto;
+        padding: 10px;
+    }
+
+    canvas {
+        width: 100% !important; /* Scale canvas to screen width */
+        height: auto !important;
+    }
 }
