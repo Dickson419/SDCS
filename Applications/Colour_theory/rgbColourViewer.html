@@ -1,167 +1,371 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RGB Layer Mixing Demo</title>
+<title>RGB Layer Mixing & Alpha Demonstration</title>
+
 <style>
-body{
-	font-family:Arial,sans-serif;
-	background:#1a1a1a;
-	color:white;
-	margin:0;
-	padding:20px;
+* {
+    box-sizing: border-box;
 }
-h1{
-	text-align:center;
+
+body {
+    font-family: Arial, sans-serif;
+    background: #1a1a1a;
+    color: white;
+    margin: 0;
+    padding: 20px;
 }
-.container{
-	display:flex;
-	gap:20px;
+
+h1 {
+    text-align: center;
 }
-.controls{
-	width:300px;
-	background:#2a2a2a;
-	padding:20px;
-	border-radius:10px;
+
+.container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
 }
-.canvas{
-	position:relative;
-	width:900px;
-	height:600px;
-	background:black;
-	border:3px solid white;
-	overflow:hidden;
+
+.controls {
+    width: 300px;
+    background: #2a2a2a;
+    padding: 20px;
+    border-radius: 10px;
 }
-.layer{
-	position:absolute;
-	width:250px;
-	height:250px;
-	border-radius:50%;
-	mix-blend-mode:screen;
-	cursor:grab;
+
+.canvas {
+    position: relative;
+    width: 900px;
+    max-width: 100%;
+    height: 600px;
+    background-color: black;
+    background-image:
+        linear-gradient(45deg, #333 25%, transparent 25%),
+        linear-gradient(-45deg, #333 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #333 75%),
+        linear-gradient(-45deg, transparent 75%, #333 75%);
+    background-size: 30px 30px;
+    background-position:
+        0 0, 0 15px, 15px -15px, -15px 0;
+    border: 3px solid white;
+    overflow: hidden;
 }
-.red{
-	background:red;
-	left:150px;
-	top:150px;
+
+.layer {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    mix-blend-mode: screen;
+    cursor: grab;
+    touch-action: none;
 }
-.green{
-	background:lime;
-	left:320px;
-	top:150px;
+
+.layer:active {
+    cursor: grabbing;
 }
-.blue{
-	background:blue;
-	left:235px;
-	top:300px;
+
+.red {
+    left: 150px;
+    top: 100px;
 }
-label{
-	display:block;
-	margin-top:15px;
+
+.green {
+    left: 320px;
+    top: 100px;
 }
-input[type="range"]{
-	width:100%;
+
+.blue {
+    left: 235px;
+    top: 260px;
 }
-.info{
-	margin-top:20px;
-	background:#333;
-	padding:10px;
-	border-radius:8px;
+
+label {
+    display: block;
+    margin-top: 15px;
 }
-.result{
-	margin-top:15px;
-	padding:10px;
-	background:#444;
-	border-radius:8px;
+
+input[type="range"] {
+    width: 100%;
+    cursor: pointer;
+}
+
+.section {
+    margin-top: 25px;
+    padding-top: 10px;
+    border-top: 1px solid #555;
+}
+
+.result, .info {
+    margin-top: 20px;
+    background: #333;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.result p {
+    line-height: 1.7;
+    font-family: monospace;
+    font-size: 13px;
+}
+
+.alpha-value {
+    float: right;
+    color: #38bdf8;
+}
+
+button {
+    width: 100%;
+    margin-top: 15px;
+    padding: 10px;
+    background: #38bdf8;
+    color: #111;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #7dd3fc;
+}
+
+h2 {
+    font-size: 19px;
+}
+
+h3 {
+    font-size: 16px;
 }
 </style>
 </head>
+
 <body>
+
 <h1>RGB Layer Mixing & Alpha Channel Demonstration</h1>
+
 <div class="container">
+
 <div class="controls">
-	<h2>Light Intensity</h2>
-	<label>
-    	Red Intensity
-    	<input type="range" id="redSlider" min="0" max="100" value="70">
-	</label>
-	<label>
-    	Green Intensity
-    	<input type="range" id="greenSlider" min="0" max="100" value="70">
-	</label>
-	<label>
-    	Blue Intensity
-    	<input type="range" id="blueSlider" min="0" max="100" value="70">
-	</label>
-	<div class="result">
-    	<strong>Current RGB Values</strong>
-    	<p id="rgbValues"></p>
-	</div>
-	<div class="info">
-    	<h3>Hint</h3>
-    	<ul>
-        	<li>Opacity acts like an <strong>value</strong>.</li>
-        	<li>Where colours overlap they combine.</li>
-        	<li>Red + Green = Yellow</li>
-        	<li>Red + Blue = Magenta</li>
-        	<li>Green + Blue = Cyan</li>
-        	<li>Red + Green + Blue = White</li>
-    	</ul>
-	</div>
+
+    <h2>RGB Intensity</h2>
+
+    <label>
+        Red Intensity
+        <input type="range" id="redSlider" min="0" max="100" value="100">
+    </label>
+
+    <label>
+        Green Intensity
+        <input type="range" id="greenSlider" min="0" max="100" value="100">
+    </label>
+
+    <label>
+        Blue Intensity
+        <input type="range" id="blueSlider" min="0" max="100" value="100">
+    </label>
+
+    <div class="section">
+        <h2>Alpha Channels</h2>
+
+        <label>
+            Red Alpha
+            <span class="alpha-value" id="redAlphaValue">100%</span>
+            <input type="range" id="redAlpha" min="0" max="100" value="100">
+        </label>
+
+        <label>
+            Green Alpha
+            <span class="alpha-value" id="greenAlphaValue">100%</span>
+            <input type="range" id="greenAlpha" min="0" max="100" value="100">
+        </label>
+
+        <label>
+            Blue Alpha
+            <span class="alpha-value" id="blueAlphaValue">100%</span>
+            <input type="range" id="blueAlpha" min="0" max="100" value="100">
+        </label>
+    </div>
+
+    <div class="result">
+        <strong>Current RGBA Values</strong>
+        <p id="rgbValues"></p>
+    </div>
+
+    <button id="resetButton">Reset Values</button>
+
+    <div class="info">
+        <h3>Understanding RGB & Alpha</h3>
+        <ul>
+            <li>RGB controls colour intensity.</li>
+            <li>Alpha controls transparency.</li>
+            <li>Alpha 100% = fully opaque.</li>
+            <li>Alpha 50% = half transparent.</li>
+            <li>Alpha 0% = fully transparent.</li>
+        </ul>
+
+        <h3>Additive Colour Mixing</h3>
+        <ul>
+            <li>Red + Green = Yellow</li>
+            <li>Red + Blue = Magenta</li>
+            <li>Green + Blue = Cyan</li>
+            <li>Red + Green + Blue = White</li>
+        </ul>
+    </div>
+
 </div>
-<div class="canvas">
-	<div class="layer red" id="red"></div>
-	<div class="layer green" id="green"></div>
-	<div class="layer blue" id="blue"></div>
+
+<div class="canvas" id="canvas">
+
+    <div class="layer red" id="red"></div>
+    <div class="layer green" id="green"></div>
+    <div class="layer blue" id="blue"></div>
+
 </div>
+
 </div>
+
 <script>
+
+// Get colour layers
 const redLayer = document.getElementById("red");
 const greenLayer = document.getElementById("green");
 const blueLayer = document.getElementById("blue");
+
+// Get RGB sliders
 const redSlider = document.getElementById("redSlider");
 const greenSlider = document.getElementById("greenSlider");
 const blueSlider = document.getElementById("blueSlider");
+
+// Get alpha sliders
+const redAlpha = document.getElementById("redAlpha");
+const greenAlpha = document.getElementById("greenAlpha");
+const blueAlpha = document.getElementById("blueAlpha");
+
+// Display elements
 const rgbValues = document.getElementById("rgbValues");
-function updateColours(){
-	const r = redSlider.value;
-	const g = greenSlider.value;
-	const b = blueSlider.value;
-	redLayer.style.opacity = r/100;
-	greenLayer.style.opacity = g/100;
-	blueLayer.style.opacity = b/100;
-	rgbValues.innerHTML =
-	`Red: ${Math.round(r*2.55)}
-	<br>Green: ${Math.round(g*2.55)}
-	<br>Blue: ${Math.round(b*2.55)}`;
+
+function updateColours() {
+
+    // Convert intensity percentages into RGB values
+    const r = Math.round(redSlider.value * 2.55);
+    const g = Math.round(greenSlider.value * 2.55);
+    const b = Math.round(blueSlider.value * 2.55);
+
+    // Convert alpha percentages into decimal values
+    const ra = redAlpha.value / 100;
+    const ga = greenAlpha.value / 100;
+    const ba = blueAlpha.value / 100;
+
+    // Apply RGBA colours to each layer
+    redLayer.style.backgroundColor =
+        `rgba(${r}, 0, 0, ${ra})`;
+
+    greenLayer.style.backgroundColor =
+        `rgba(0, ${g}, 0, ${ga})`;
+
+    blueLayer.style.backgroundColor =
+        `rgba(0, 0, ${b}, ${ba})`;
+
+    // Update alpha percentage displays
+    document.getElementById("redAlphaValue").textContent =
+        redAlpha.value + "%";
+
+    document.getElementById("greenAlphaValue").textContent =
+        greenAlpha.value + "%";
+
+    document.getElementById("blueAlphaValue").textContent =
+        blueAlpha.value + "%";
+
+    // Display RGBA values
+    rgbValues.innerHTML =
+        `Red: rgba(${r}, 0, 0, ${ra})<br>
+         Green: rgba(0, ${g}, 0, ${ga})<br>
+         Blue: rgba(0, 0, ${b}, ${ba})`;
+
 }
-redSlider.addEventListener("input",updateColours);
-greenSlider.addEventListener("input",updateColours);
-blueSlider.addEventListener("input",updateColours);
-updateColours();
-const layers = document.querySelectorAll(".layer");
-layers.forEach(layer=>{
-	let drag = false;
-	let offsetX = 0;
-	let offsetY = 0;
-	layer.addEventListener("mousedown",(e)=>{
-    	drag = true;
-    	offsetX = e.clientX - layer.offsetLeft;
-    	offsetY = e.clientY - layer.offsetTop;
-    	layer.style.zIndex = 999;
-	});
-	document.addEventListener("mousemove",(e)=>{
-    	if(!drag) return;
-    	layer.style.left = (e.clientX - offsetX) + "px";
-    	layer.style.top = (e.clientY - offsetY) + "px";
-	});
-	document.addEventListener("mouseup",()=>{
-    	drag = false;
-    	layer.style.zIndex = "";
-	});
+
+// Add event listeners to all sliders
+document.querySelectorAll('input[type="range"]').forEach(slider => {
+    slider.addEventListener("input", updateColours);
 });
+
+// Reset sliders
+document.getElementById("resetButton").addEventListener("click", () => {
+
+    redSlider.value = 100;
+    greenSlider.value = 100;
+    blueSlider.value = 100;
+
+    redAlpha.value = 100;
+    greenAlpha.value = 100;
+    blueAlpha.value = 100;
+
+    updateColours();
+
+});
+
+// Initialise colours
+updateColours();
+
+
+// Make colour layers draggable
+const layers = document.querySelectorAll(".layer");
+const canvas = document.getElementById("canvas");
+
+layers.forEach(layer => {
+
+    let drag = false;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    layer.addEventListener("pointerdown", (e) => {
+
+        drag = true;
+
+        const layerRect = layer.getBoundingClientRect();
+
+        offsetX = e.clientX - layerRect.left;
+        offsetY = e.clientY - layerRect.top;
+
+        layer.style.zIndex = 999;
+
+        layer.setPointerCapture(e.pointerId);
+
+    });
+
+    layer.addEventListener("pointermove", (e) => {
+
+        if (!drag) return;
+
+        const canvasRect = canvas.getBoundingClientRect();
+
+        let x = e.clientX - canvasRect.left - offsetX;
+        let y = e.clientY - canvasRect.top - offsetY;
+
+        // Keep layers inside the canvas
+        x = Math.max(0, Math.min(x, canvas.clientWidth - layer.offsetWidth));
+        y = Math.max(0, Math.min(y, canvas.clientHeight - layer.offsetHeight));
+
+        layer.style.left = x + "px";
+        layer.style.top = y + "px";
+
+    });
+
+    layer.addEventListener("pointerup", () => {
+
+        drag = false;
+        layer.style.zIndex = "";
+
+    });
+
+});
+
 </script>
+
 </body>
 </html>
-
