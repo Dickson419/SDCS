@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RGB Layer Mixing Demo</title>
+<style>
+body{
+	font-family:Arial,sans-serif;
+	background:#1a1a1a;
+	color:white;
+	margin:0;
+	padding:20px;
+}
+h1{
+	text-align:center;
+}
+.container{
+	display:flex;
+	gap:20px;
+}
+.controls{
+	width:300px;
+	background:#2a2a2a;
+	padding:20px;
+	border-radius:10px;
+}
+.canvas{
+	position:relative;
+	width:900px;
+	height:600px;
+	background:black;
+	border:3px solid white;
+	overflow:hidden;
+}
+.layer{
+	position:absolute;
+	width:250px;
+	height:250px;
+	border-radius:50%;
+	mix-blend-mode:screen;
+	cursor:grab;
+}
+.red{
+	background:red;
+	left:150px;
+	top:150px;
+}
+.green{
+	background:lime;
+	left:320px;
+	top:150px;
+}
+.blue{
+	background:blue;
+	left:235px;
+	top:300px;
+}
+label{
+	display:block;
+	margin-top:15px;
+}
+input[type="range"]{
+	width:100%;
+}
+.info{
+	margin-top:20px;
+	background:#333;
+	padding:10px;
+	border-radius:8px;
+}
+.result{
+	margin-top:15px;
+	padding:10px;
+	background:#444;
+	border-radius:8px;
+}
+</style>
+</head>
+<body>
+<h1>RGB Layer Mixing & Alpha Channel Demonstration</h1>
+<div class="container">
+<div class="controls">
+	<h2>Light Intensity</h2>
+	<label>
+    	Red Intensity
+    	<input type="range" id="redSlider" min="0" max="100" value="70">
+	</label>
+	<label>
+    	Green Intensity
+    	<input type="range" id="greenSlider" min="0" max="100" value="70">
+	</label>
+	<label>
+    	Blue Intensity
+    	<input type="range" id="blueSlider" min="0" max="100" value="70">
+	</label>
+	<div class="result">
+    	<strong>Current RGB Values</strong>
+    	<p id="rgbValues"></p>
+	</div>
+	<div class="info">
+    	<h3>Hint</h3>
+    	<ul>
+        	<li>Opacity acts like an <strong>value</strong>.</li>
+        	<li>Where colours overlap they combine.</li>
+        	<li>Red + Green = Yellow</li>
+        	<li>Red + Blue = Magenta</li>
+        	<li>Green + Blue = Cyan</li>
+        	<li>Red + Green + Blue = White</li>
+    	</ul>
+	</div>
+</div>
+<div class="canvas">
+	<div class="layer red" id="red"></div>
+	<div class="layer green" id="green"></div>
+	<div class="layer blue" id="blue"></div>
+</div>
+</div>
+<script>
+const redLayer = document.getElementById("red");
+const greenLayer = document.getElementById("green");
+const blueLayer = document.getElementById("blue");
+const redSlider = document.getElementById("redSlider");
+const greenSlider = document.getElementById("greenSlider");
+const blueSlider = document.getElementById("blueSlider");
+const rgbValues = document.getElementById("rgbValues");
+function updateColours(){
+	const r = redSlider.value;
+	const g = greenSlider.value;
+	const b = blueSlider.value;
+	redLayer.style.opacity = r/100;
+	greenLayer.style.opacity = g/100;
+	blueLayer.style.opacity = b/100;
+	rgbValues.innerHTML =
+	`Red: ${Math.round(r*2.55)}
+	<br>Green: ${Math.round(g*2.55)}
+	<br>Blue: ${Math.round(b*2.55)}`;
+}
+redSlider.addEventListener("input",updateColours);
+greenSlider.addEventListener("input",updateColours);
+blueSlider.addEventListener("input",updateColours);
+updateColours();
+const layers = document.querySelectorAll(".layer");
+layers.forEach(layer=>{
+	let drag = false;
+	let offsetX = 0;
+	let offsetY = 0;
+	layer.addEventListener("mousedown",(e)=>{
+    	drag = true;
+    	offsetX = e.clientX - layer.offsetLeft;
+    	offsetY = e.clientY - layer.offsetTop;
+    	layer.style.zIndex = 999;
+	});
+	document.addEventListener("mousemove",(e)=>{
+    	if(!drag) return;
+    	layer.style.left = (e.clientX - offsetX) + "px";
+    	layer.style.top = (e.clientY - offsetY) + "px";
+	});
+	document.addEventListener("mouseup",()=>{
+    	drag = false;
+    	layer.style.zIndex = "";
+	});
+});
+</script>
+</body>
+</html>
+

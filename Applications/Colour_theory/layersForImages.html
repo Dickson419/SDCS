@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Layer Demonstration</title>
+<style>
+body{
+	font-family: Arial, sans-serif;
+	background:#f0f0f0;
+	margin:20px;
+}
+h1{
+	text-align:center;
+}
+.container{
+	display:flex;
+	gap:20px;
+	justify-content:center;
+}
+.canvas{
+	position:relative;
+	width:800px;
+	height:500px;
+	background:white;
+	border:3px solid #333;
+	overflow:hidden;
+}
+.layer{
+	position:absolute;
+	width:180px;
+	height:120px;
+	border-radius:10px;
+	color:white;
+	font-weight:bold;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	cursor:move;
+	user-select:none;
+	box-shadow:0 4px 10px rgba(0,0,0,0.3);
+}
+.layer1{
+	background:#e74c3c;
+	left:100px;
+	top:100px;
+	z-index:1;
+}
+.layer2{
+	background:#3498db;
+	left:180px;
+	top:150px;
+	z-index:2;
+}
+.layer3{
+	background:#2ecc71;
+	left:260px;
+	top:200px;
+	z-index:3;
+}
+.controls{
+	width:250px;
+	background:white;
+	padding:15px;
+	border-radius:10px;
+	box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+button{
+	width:100%;
+	padding:10px;
+	margin-top:10px;
+	cursor:pointer;
+	border:none;
+	background:#333;
+	color:white;
+	border-radius:5px;
+}
+button:hover{
+	background:#555;
+}
+.selected{
+	outline:4px solid gold;
+}
+</style>
+</head>
+<body>
+<h1>How Layers Work</h1>
+<div class="container">
+	<div class="canvas">
+    	<div class="layer layer1">Layer 1</div>
+    	<div class="layer layer2">Layer 2</div>
+    	<div class="layer layer3">Layer 3</div>
+	</div>
+	<div class="controls">
+    	<h2>Selected Layer</h2>
+    	<p>Click a layer then:</p>
+    	<button id="forward">Bring Forward</button>
+    	<button id="backward">Send Backward</button>
+    	<hr>
+    	<p>
+        	<strong>Hint</strong><br>
+        	Layers higher in the stack cover layers underneath,
+        	just like sheets of acetate or layers in GIMP.
+    	</p>
+	</div>
+</div>
+<script>
+let selectedLayer = null;
+const layers = document.querySelectorAll('.layer');
+layers.forEach(layer => {
+	layer.addEventListener('click', () => {
+    	layers.forEach(l => l.classList.remove('selected'));
+    	selectedLayer = layer;
+    	layer.classList.add('selected');
+	});
+	let offsetX, offsetY;
+	let dragging = false;
+	layer.addEventListener('mousedown', (e) => {
+    	dragging = true;
+    	offsetX = e.clientX - layer.offsetLeft;
+    	offsetY = e.clientY - layer.offsetTop;
+	});
+	document.addEventListener('mousemove', (e) => {
+    	if(!dragging || selectedLayer !== layer) return;
+    	layer.style.left = (e.clientX - offsetX) + 'px';
+    	layer.style.top = (e.clientY - offsetY) + 'px';
+	});
+	document.addEventListener('mouseup', () => {
+    	dragging = false;
+	});
+});
+document.getElementById('forward').addEventListener('click', () => {
+	if(!selectedLayer) return;
+	let current = parseInt(getComputedStyle(selectedLayer).zIndex);
+	selectedLayer.style.zIndex = current + 1;
+});
+document.getElementById('backward').addEventListener('click', () => {
+	if(!selectedLayer) return;
+	let current = parseInt(getComputedStyle(selectedLayer).zIndex);
+	if(current > 1){
+    	selectedLayer.style.zIndex = current - 1;
+	}
+});
+</script>
+</body>
+</html>
+
